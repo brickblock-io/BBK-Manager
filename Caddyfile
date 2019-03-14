@@ -1,0 +1,7 @@
+0.0.0.0:8080 {
+  root /srv
+  gzip
+  rewrite / {
+    to {path} {path}/ /
+  }  
+}

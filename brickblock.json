@@ -1,0 +1,41 @@
+{
+  "$schema": "https://git.brickblock.sh/devops/project-templates/raw/master/schema.json",
+  "packageName": "bbk-manager",
+  "ci": {
+    "image": "node:10.14",
+    "jobs": [
+      "cache",
+      "setup",
+      "lint",
+      "test",
+      "flow",
+      "flow-coverage",
+      "build-image",
+      "review",
+      "staging",
+      "production",
+      "purge"
+    ],
+    "requiredEnvVars": [
+      "REVIEW_DOMAIN",
+      "STAGING_DOMAIN",
+      "PRODUCTION_DOMAIN",
+      "REVIEW_SUBDOMAIN",
+      "STAGING_SUBDOMAIN",
+      "PRODUCTION_SUBDOMAIN",
+      "SLACK_WEBHOOK_URL",
+      "ZONE"
+    ]
+  },
+  "preset": "cra",
+  "description": "create-react-app - for apps based on the de-facto standard 'create-react-app'",
+  "port": 8080,
+  "hasUrl": true,
+  "strongConfig": false,
+  "publishAsNpmPackage": false,
+  "ignoreFiles": [
+    "babel.config.js",
+    "jest.config.js",
+    ".eslintrc.js"
+  ]
+}

@@ -1,12 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+// @flow
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './app'
+const render = async NextApp => {
+  // $FlowIgnore because we know by convention that #root exists
+  ReactDOM.render(<NextApp />, document.getElementById('root'))
+}
+render(App)
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// $FlowIgnore because 'hot' is a webpack-specific property that isn't typed in the core types
+if (module.hot) {
+  module.hot.accept('./app', () => {
+    const NextApp = require('./app').default
+    render(NextApp)
+  })
+}

@@ -1,0 +1,66 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+package-lock.json
+yarn-error.log
+npm-debug.log
+data
+
+# dev dependencies
+.browserslistrc
+.dockerignore
+.eslintrc.js
+.eslintignore
+.flowconfig
+.markdownlint.json
+.prettierrc
+.prettierignore
+commitlint.config.js
+/Dockerfile
+/docker-compose.yml
+/flow-typed
+
+# CI / Deployment
+.gitlab-ci.yml
+/chart
+
+# Docs
+README.md
+
+# test
+coverage
+codeclimate.html
+
+# database
+/data
+
+# build output
+build
+
+# git
+/.git
+.gitignore
+
+# misc
+.DS_Store
+.env
+*.log
+.truffle-solidity-loader
+
+# secrets
+*.crt
+*.key
+*.rsa
+.env
+.env.example
+.ci-env
+
+# tmp files
+~*
+.#*
+.editorconfig
+.cache-loader
+.gitlab-ci
+.vscode
+Session.vim

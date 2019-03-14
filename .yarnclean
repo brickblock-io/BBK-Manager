@@ -1,0 +1,47 @@
+# test directories
+__tests__
+test
+tests
+powered-test
+
+# asset directories
+docs
+doc
+website
+images
+
+# examples
+example
+examples
+
+# code coverage directories
+coverage
+.nyc_output
+
+# build scripts
+Makefile
+Gulpfile.js
+Gruntfile.js
+
+# configs
+.tern-project
+.gitattributes
+.editorconfig
+.*ignore
+.eslintrc
+.jshintrc
+.flowconfig
+.documentup.json
+.yarn-metadata.json
+.*.yml
+*.yml
+commitlint.config.js
+
+# misc
+*.gz
+*.md
+
+# explicitly DON'T delete the following files and folders
+!.svgo.yml
+!esm.js.gz
+!cypress/**/*
