@@ -1,7 +1,11 @@
 // @flow
 import React from 'react'
 
+// Providers
+import { SnackbarProvider } from 'notistack'
+
 // Components
+import ErrorBoundary from './layout/components/error-boundary'
 import Layout from './layout'
 import Home from './pages/home'
 
@@ -18,9 +22,17 @@ import type { ComponentType } from 'react'
 const App = () => (
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
-    <Layout>
-      <Home />
-    </Layout>
+    <SnackbarProvider
+      anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+      autoHideDuration={7000}
+      maxSnack={3}
+    >
+      <Layout>
+        <ErrorBoundary>
+          <Home />
+        </ErrorBoundary>
+      </Layout>
+    </SnackbarProvider>
   </MuiThemeProvider>
 )
 
