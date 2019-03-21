@@ -2,6 +2,7 @@
   "$schema": "https://git.brickblock.sh/devops/project-templates/raw/master/schema.json",
   "packageName": "bbk-manager",
   "ci": {
+    "branch": "feat/sentry-releases",
     "image": "node:10.14",
     "jobs": [
       "cache",
