@@ -26,7 +26,7 @@ templates_version:
   variables:
     GIT_STRATEGY: none
   script:
-    - 'echo "Templates at last CI file update: https://git.brickblock.sh/devops/project-templates/tree/e3a87db1ab48a5c61d6a2e0a01d7f1d247c1fe45"'
+    - 'echo "Templates at last CI file update: https://git.brickblock.sh/devops/project-templates/tree/1a1181ab78e455e9513360558565165e99a2c69f"'
   except:
     refs:
       - tags
@@ -48,6 +48,7 @@ check_env_vars:
     - ': "${STAGING_SUBDOMAIN:?Environment variable STAGING_SUBDOMAIN needs to be set as a CI variable in the GitLab repo settings before running this script}"'
     - ': "${PRODUCTION_SUBDOMAIN:?Environment variable PRODUCTION_SUBDOMAIN needs to be set as a CI variable in the GitLab repo settings before running this script}"'
     - ': "${ZONE:?Environment variable ZONE needs to be set as a CI variable in the GitLab repo settings before running this script}"'
+    - ': "${SENTRY_AUTH_TOKEN:?Environment variable SENTRY_AUTH_TOKEN needs to be set as a CI variable in the GitLab repo settings before running this script}"'
     - ': "${SLACK_WEBHOOK_URL:?Environment variable SLACK_WEBHOOK_URL needs to be set as a CI variable in the GitLab repo settings before running this script}"'
   dependencies: []
   cache: {}
@@ -69,4 +70,5 @@ include:
   - 'https://git.brickblock.sh/devops/project-templates/raw/master/gitlab-ci/review.yml'
   - 'https://git.brickblock.sh/devops/project-templates/raw/master/gitlab-ci/staging.yml'
   - 'https://git.brickblock.sh/devops/project-templates/raw/master/gitlab-ci/production.yml'
+  - 'https://git.brickblock.sh/devops/project-templates/raw/master/gitlab-ci/sentry-release-production.yml'
   - 'https://git.brickblock.sh/devops/project-templates/raw/master/gitlab-ci/purge.yml'

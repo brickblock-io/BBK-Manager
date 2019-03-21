@@ -14,6 +14,7 @@
       "review",
       "staging",
       "production",
+      "sentry-release-production",
       "purge"
     ],
     "requiredEnvVars": [
@@ -23,6 +24,7 @@
       "REVIEW_SUBDOMAIN",
       "STAGING_SUBDOMAIN",
       "PRODUCTION_SUBDOMAIN",
+      "SENTRY_AUTH_TOKEN",
       "SLACK_WEBHOOK_URL",
       "ZONE"
     ]
@@ -33,9 +35,5 @@
   "hasUrl": true,
   "strongConfig": false,
   "publishAsNpmPackage": false,
-  "ignoreFiles": [
-    "babel.config.js",
-    "jest.config.js",
-    ".eslintrc.js"
-  ]
+  "ignoreFiles": ["babel.config.js", "jest.config.js", ".eslintrc.js"]
 }
