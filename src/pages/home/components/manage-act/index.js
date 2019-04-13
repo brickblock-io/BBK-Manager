@@ -5,7 +5,7 @@ import React, { Fragment } from 'react'
 import useActBalanceOf from './use-act-balance-of'
 
 // Utils
-import reportError from '../../../../utils/report-error'
+import reportError from 'utils/report-error'
 
 // Components
 import CircularProgress from '@material-ui/core/CircularProgress'

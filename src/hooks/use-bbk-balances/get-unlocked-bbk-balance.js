@@ -1,21 +1,24 @@
 // @flow
 import { isBN } from 'web3-utils'
-import formatWeiValue from '../../../../../utils/format-wei-value'
+import formatWeiValue from 'utils/format-wei-value'
 
 // Types
 import type { AbstractContractT } from 'truffle-contract'
 import type { ActionsT } from './actions'
 import type BN from 'bn.js'
+import type { BalanceT } from 'types'
 
 type GetUnlockedBbkBalanceT = ({
   BrickblockToken: ?AbstractContractT,
   address: ?string,
   dispatch: ActionsT => void,
+  previousBalance?: ?BalanceT,
 }) => void
 export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
   BrickblockToken,
   address,
   dispatch,
+  previousBalance = null,
 }) => {
   // eslint-disable-next-line no-extra-semi
   const _getLockedBbkBalance = async () => {
@@ -36,12 +39,14 @@ export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
           return
         }
 
-        const formattedBalance = formatWeiValue(rawBalance)
+        const newBalance = formatWeiValue(rawBalance)
 
-        dispatch({
-          type: 'set-unlocked-balance',
-          payload: formattedBalance,
-        })
+        if (!previousBalance || previousBalance.value !== newBalance.value) {
+          dispatch({
+            type: 'set-unlocked-balance',
+            payload: newBalance,
+          })
+        }
       } catch (error) {
         dispatch({
           type: 'set-unlocked-balance/error',

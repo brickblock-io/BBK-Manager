@@ -3,7 +3,9 @@ WORKDIR /app
 
 # Needed to tell webpack what environment to build for
 ARG BBK_RUNTIME_ENVIRONMENT=production
-ENV BBK_RUNTIME_ENVIRONMENT=${BBK_RUNTIME_ENVIRONMENT}
+
+# Needed for tagging sentry releases
+ARG COMMIT_SHA
 
 # Copy dependency specifications first, so we only have to re-install
 # dependencies when the package.json or yarn.lock change and can make

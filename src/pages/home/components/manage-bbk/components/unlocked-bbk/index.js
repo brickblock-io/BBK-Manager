@@ -5,21 +5,33 @@ import React from 'react'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import LockBbkForm from '../lock-bbk-form'
+import LockBbkForm from './components/lock-bbk-form'
 import Typography from '@material-ui/core/Typography'
 
 // Types
-import type { BalanceT } from '../../use-bbk-balances-of/reducer'
+import type { BalanceT } from 'hooks/use-bbk-balances/reducer'
+import type { TransactionsT } from 'types'
 
 type PropsT = {|
+  approveTransactions: TransactionsT,
   classes: { [string]: string },
-  handleLock: (event: SyntheticEvent<HTMLFormElement>, amount: string) => void,
-  lockTokensLoading: boolean,
+  handleCleanup: () => void,
+  handleLock: (amount: string) => void,
+  loading: boolean,
+  lockTransactions: TransactionsT,
   unlockedBalance: ?BalanceT,
 |}
 
 export const UnlockedBbk = (props: PropsT) => {
-  const { unlockedBalance, classes, handleLock, lockTokensLoading } = props
+  const {
+    unlockedBalance,
+    classes,
+    handleLock,
+    handleCleanup,
+    loading,
+    approveTransactions,
+    lockTransactions,
+  } = props
 
   return (
     <Card className={classes.card}>
@@ -37,8 +49,11 @@ export const UnlockedBbk = (props: PropsT) => {
               </Typography>
             </div>
             <LockBbkForm
+              approveTransactions={approveTransactions}
+              handleCleanup={handleCleanup}
               handleSubmit={handleLock}
-              loading={lockTokensLoading}
+              loading={loading}
+              lockTransactions={lockTransactions}
               unlockedBbkBalance={unlockedBalance.value}
             />
           </div>

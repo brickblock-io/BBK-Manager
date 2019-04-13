@@ -2,7 +2,6 @@
   "$schema": "https://git.brickblock.sh/devops/project-templates/raw/master/schema.json",
   "packageName": "bbk-manager",
   "ci": {
-    "branch": "feat/sentry-releases",
     "image": "node:10.14",
     "jobs": [
       "cache",
@@ -22,9 +21,6 @@
       "REVIEW_DOMAIN",
       "STAGING_DOMAIN",
       "PRODUCTION_DOMAIN",
-      "REVIEW_SUBDOMAIN",
-      "STAGING_SUBDOMAIN",
-      "PRODUCTION_SUBDOMAIN",
       "SENTRY_AUTH_TOKEN",
       "SLACK_WEBHOOK_URL",
       "ZONE"

@@ -1,0 +1,23 @@
+$id: http://git.brickblock.sh/platform/issuer-dashboard/blob/master/public/schema.yml
+$schema: http://json-schema.org/draft-07/schema#
+definitions: {}
+type: object
+title: Schema for the issuer-dashboard config
+required:
+  - sentry
+properties:
+  sentry:
+    $id: '#/properties/sentry'
+    type: object
+    title: The Sentry Schema
+    required:
+      - dsn
+    properties:
+      dsn:
+        $id: '#/properties/sentry/properties/dsn'
+        type: string
+        format: uri
+        title: The Sentry DSN (Data Source Name), needed to talk to the Sentry API
+        default: https://<replace-me-with-a-real-dsn>@sentry.io
+        examples:
+          - https://12345678999999999999999999999999@sentry.io/1234567

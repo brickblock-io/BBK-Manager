@@ -2,12 +2,12 @@
 import React, { Fragment } from 'react'
 
 // Hooks
-import useBbkBalancesOf from './use-bbk-balances-of'
+import useBbkBalances from 'hooks/use-bbk-balances'
 
 // Utils
 import { withSnackbar } from 'notistack'
 import compose from '@ramda/compose'
-import reportError from '../../../../utils/report-error'
+import reportError from 'utils/report-error'
 
 // Components
 import LockedBbk from './components/locked-bbk'
@@ -31,6 +31,7 @@ type InjectedPropsT = {|
 type OwnPropsT = {|
   contractRegistry: ?AbstractContractT,
   currentAccount: ?string,
+  networkName: ?string,
   web3Provider: ?mixed,
 |}
 
@@ -42,6 +43,7 @@ export const ManageBbk = (props: PropsT) => {
     contractRegistry,
     currentAccount,
     enqueueSnackbar,
+    networkName,
     web3Provider,
   } = props
 
@@ -50,22 +52,53 @@ export const ManageBbk = (props: PropsT) => {
     BrickblockToken,
     balances,
     handleLockTokens,
+    handleLockTokensCleanup,
     handleUnlockTokens,
+    handleUnlockTokensCleanup,
+    approveTokensError,
+    approveTokensLoading,
+    approveTokensTransactions,
     lockTokensError,
     lockTokensLoading,
+    lockTokensTransactions,
+    unlockTokensError,
     unlockTokensLoading,
-  } = useBbkBalancesOf({
+    unlockTokensTransactions,
+  } = useBbkBalances({
     address: currentAccount,
     contractRegistry,
     web3Provider,
   })
 
-  if (!contractRegistry || !currentAccount || !web3Provider) {
+  if (!contractRegistry || !currentAccount || !networkName || !web3Provider) {
     return 'Loading...'
+  }
+
+  if (approveTokensError) {
+    enqueueSnackbar(approveTokensError, { variant: 'error' })
+    reportError(
+      new Error(
+        `Couldn't approve AccessToken contract to lock BBK tokens for '${currentAccount}': ${approveTokensError}`
+      )
+    )
   }
 
   if (lockTokensError) {
     enqueueSnackbar(lockTokensError, { variant: 'error' })
+    reportError(
+      new Error(
+        `Couldn't lock BBK tokens for '${currentAccount}': ${lockTokensError}`
+      )
+    )
+  }
+
+  if (unlockTokensError) {
+    enqueueSnackbar(unlockTokensError, { variant: 'error' })
+    reportError(
+      new Error(
+        `Couldn't unlock BBK tokens for '${currentAccount}': ${unlockTokensError}`
+      )
+    )
   }
 
   if (balances && balances.locked && balances.locked.error) {
@@ -97,20 +130,27 @@ export const ManageBbk = (props: PropsT) => {
   return (
     <Fragment>
       <UnlockedBbk
+        approveTransactions={approveTokensTransactions}
         classes={classes}
+        handleCleanup={handleLockTokensCleanup}
         handleLock={handleLockTokens}
-        lockTokensLoading={lockTokensLoading}
+        loading={approveTokensLoading || lockTokensLoading}
+        lockTransactions={lockTokensTransactions}
         unlockedBalance={balances.unlocked}
       />
       <LockedBbk
         classes={classes}
+        handleCleanup={handleUnlockTokensCleanup}
         handleUnlock={handleUnlockTokens}
+        loading={unlockTokensLoading}
         lockedBalance={balances.locked}
-        unlockTokensLoading={unlockTokensLoading}
+        unlockTransactions={unlockTokensTransactions}
       />
       <BbkTransactions
         AccessToken={AccessToken}
         BrickblockToken={BrickblockToken}
+        currentAccount={currentAccount}
+        networkName={networkName}
       />
     </Fragment>
   )

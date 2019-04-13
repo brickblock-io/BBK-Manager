@@ -2,14 +2,14 @@
 import { useEffect, useReducer } from 'react'
 
 // Hooks
-import { useContract } from '../../../../../hooks/use-contract'
+import { useContract } from '@brickblock/web3'
 
 // Data
 import reducer, { initialState } from './reducer'
 
 // Utils
 import { isBN } from 'web3-utils'
-import formatWeiValue from '../../../../../utils/format-wei-value'
+import formatWeiValue from 'utils/format-wei-value'
 
 // Types
 import type { AbstractContractT } from 'truffle-contract'

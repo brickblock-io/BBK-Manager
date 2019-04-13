@@ -1,13 +1,17 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/node_modules
 .npmrc
+.pnp
+.pnp.js
 .yarnrc
-node_modules
 package-lock.json
 npm-shrinkwrap.json
-*-debug.log*
-*-error.log*
+npm-debug.log*
+npm-error.log*
+yarn-debug.log*
+yarn-error.log*
 
 # testing
 /.nyc_output

@@ -4,10 +4,13 @@ import type { ActionsT } from './actions'
 
 // Utils
 import { isBN, toBN } from 'web3-utils'
-import formatWeiValue from '../../../../../utils/format-wei-value'
+import formatWeiValue from 'utils/format-wei-value'
 
 // Config
-import config from '../../../../../app.config.js'
+import config from 'app.config.js'
+
+// Types
+import type { TransactionReceiptT } from 'types'
 
 type LockBbkT = ({
   AccessToken: ?AbstractContractT,
@@ -68,11 +71,17 @@ export const lockBbk: LockBbkT = ({
        * Approve AccessToken contract to lock BBK on behalf of the user
        */
       try {
-        await BrickblockToken.approve.sendTransaction(
-          AccessToken.address,
-          amountInWei,
-          { from: address, gas: config.DEFAULT_GAS }
-        )
+        await BrickblockToken.approve
+          .sendTransaction(AccessToken.address, amountInWei, {
+            from: address,
+            gas: config.DEFAULT_GAS,
+          })
+          .on('transactionHash', (hash: string) => {
+            dispatch({ type: 'approve-tokens/pending', payload: hash })
+          })
+          .on('receipt', (receipt: TransactionReceiptT) => {
+            dispatch({ type: 'approve-tokens/success', payload: receipt })
+          })
       } catch (error) {
         if (
           error.message.includes(
@@ -81,13 +90,13 @@ export const lockBbk: LockBbkT = ({
         ) {
           dispatch({
             type: 'lock-tokens/error',
-            payload: 'TX_SIGNATURE_DENIED',
+            payload: 'Transaction signature was denied in MetaMask',
           })
         } else {
           dispatch({
             type: 'lock-tokens/error',
             payload:
-              "Couldn't approve AccessToken contract to lock BBK on behalf of the user",
+              "Couldn't approve AccessToken contract to lock BBK on your behalf. An unexpected error occurred 😕",
           })
         }
 
@@ -98,14 +107,17 @@ export const lockBbk: LockBbkT = ({
        * Finally, lock the entered amount of BBK tokens
        */
       try {
-        await AccessToken.lockBBK.sendTransaction(amountInWei, {
-          from: address,
-          gas: config.DEFAULT_GAS,
-        })
-
-        dispatch({
-          type: 'lock-tokens/success',
-        })
+        await AccessToken.lockBBK
+          .sendTransaction(amountInWei, {
+            from: address,
+            gas: config.DEFAULT_GAS,
+          })
+          .on('transactionHash', (hash: string) => {
+            dispatch({ type: 'lock-tokens/pending', payload: hash })
+          })
+          .on('receipt', (receipt: TransactionReceiptT) => {
+            dispatch({ type: 'lock-tokens/success', payload: receipt })
+          })
       } catch (error) {
         if (
           error.message.includes(
@@ -114,12 +126,13 @@ export const lockBbk: LockBbkT = ({
         ) {
           dispatch({
             type: 'lock-tokens/error',
-            payload: 'TX_SIGNATURE_DENIED',
+            payload: 'Transaction signature was denied in MetaMask',
           })
         } else {
           dispatch({
             type: 'lock-tokens/error',
-            payload: "Couldn't lock tokens",
+            payload:
+              "Couldn't lock BBK tokens. An unexpected error occurred 😕",
           })
         }
 

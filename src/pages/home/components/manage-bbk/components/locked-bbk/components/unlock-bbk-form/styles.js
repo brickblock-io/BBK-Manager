@@ -11,9 +11,10 @@ const styles: StylesT = {
     marginRight: '0.5rem',
   },
   button: {
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     minHeight: 53,
     minWidth: 'auto',
+    top: 24,
     width: '100px',
   },
 }

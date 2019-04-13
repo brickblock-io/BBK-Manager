@@ -8,6 +8,7 @@ import useBbkTransactions from './use-bbk-transactions'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import TransactionTable from './components/transaction-table'
 import Typography from '@material-ui/core/Typography'
 
 // Types
@@ -16,11 +17,16 @@ import type { AbstractContractT } from 'truffle-contract'
 type PropsT = {|
   AccessToken: ?AbstractContractT,
   BrickblockToken: ?AbstractContractT,
+  currentAccount: string,
+  networkName: string,
 |}
 
 export const BbkTransactions = (props: PropsT) => {
-  const { AccessToken, BrickblockToken } = props
-  const transactions = useBbkTransactions({ AccessToken, BrickblockToken })
+  const { AccessToken, BrickblockToken, currentAccount, networkName } = props
+  const { error, transactions } = useBbkTransactions({
+    AccessToken,
+    BrickblockToken,
+  })
 
   return (
     <Card>
@@ -28,9 +34,15 @@ export const BbkTransactions = (props: PropsT) => {
         <Typography gutterBottom variant="h2">
           Your BBK Transactions
         </Typography>
-        {transactions && transactions.length ? (
-          transactions.map(tx => <div key={tx.hash}>{tx.hash}</div>)
-        ) : (
+        {error}
+        {!error && transactions && transactions.length && (
+          <TransactionTable
+            currentAccount={currentAccount}
+            networkName={networkName}
+            transactions={transactions}
+          />
+        )}
+        {!error && !transactions && (
           <div>
             <CircularProgress size={30} />
           </div>

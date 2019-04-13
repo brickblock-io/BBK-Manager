@@ -1,26 +1,32 @@
 // @flow
-import { useEffect, useState } from 'react'
-import Web3 from 'web3'
-import useWeb3 from '../../../../../../hooks/use-web3'
+import { useContext, useEffect, useState } from 'react'
+
+// Data
+import { Web3Context } from 'app'
 
 // Utils
 import axios from 'axios'
 import abiDecoder from 'abi-decoder'
-import getEnvVar from '../../../../../../utils/get-env-var'
+import getEnvVar from 'utils/get-env-var'
 
 // Types
 import type { AbstractContractT } from 'truffle-contract'
+import type { ERC20TransferTransactionT } from 'types'
 
 type UseBbkTransactionsT = ({
   AccessToken: ?AbstractContractT,
   BrickblockToken: ?AbstractContractT,
-}) => $ReadOnlyArray<{ hash: string }>
+}) => {
+  error: ?string,
+  transactions: ?$ReadOnlyArray<ERC20TransferTransactionT>,
+}
 export const useBbkTransactions: UseBbkTransactionsT = ({
   AccessToken,
   BrickblockToken,
 }) => {
-  const { currentAccount } = useWeb3(Web3)
-  const [transactions, setTransactions] = useState([])
+  const { currentAccount, networkName } = useContext(Web3Context)
+  const [transactions, setTransactions] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const _useBbkTransactions = async () => {
@@ -31,33 +37,63 @@ export const useBbkTransactions: UseBbkTransactionsT = ({
         currentAccount !== 'loading'
       ) {
         abiDecoder.addABI(BrickblockToken.abi)
-        const response = await axios.get(
-          `http://api.etherscan.io/api?module=account&action=txlist&address=${currentAccount}&startblock=0&endblock=99999999&sort=asc&apikey=${getEnvVar(
+        abiDecoder.addABI(AccessToken.abi)
+
+        let etherscanBaseUrl
+
+        switch (networkName) {
+          case 'mainnet':
+            etherscanBaseUrl = 'https://api.etherscan.io'
+            break
+          case 'ropsten':
+            etherscanBaseUrl = 'https://api-ropsten.etherscan.io'
+            break
+          default:
+            etherscanBaseUrl = 'https://api.etherscan.io'
+        }
+
+        const etherscanApiResponse = await axios.get(
+          `${etherscanBaseUrl}/api?module=account&action=tokentx&address=${currentAccount}&startblock=0&endblock=999999999&sort=desc&apikey=${getEnvVar(
             'REACT_APP_ETHERSCAN_API_KEY'
           )}`
         )
 
-        const allTransactions = response.data.result
+        const allErc20Transactions = etherscanApiResponse.data.result
 
-        const rawBbkTransactions = allTransactions.filter(
-          tx =>
-            tx.from.toLowerCase() === currentAccount.toLowerCase() &&
-            tx.to.toLowerCase() === BrickblockToken.address.toLowerCase()
-        )
+        const bbkTransfers = Array.isArray(allErc20Transactions)
+          ? allErc20Transactions.filter(
+              tx =>
+                tx.contractAddress.toLowerCase() ===
+                BrickblockToken.address.toLowerCase()
+            )
+          : null
 
-        const decodedBbkTransactions = rawBbkTransactions.map(tx => ({
-          type: abiDecoder.decodeMethod(tx.input),
-          ...tx,
-        }))
+        if (!bbkTransfers) {
+          setError("Couldn't load transaction data from EtherScan")
+        } else {
+          const bbkTransfersForCurrentAccount = bbkTransfers.filter(
+            tx =>
+              tx.to.toLowerCase() === currentAccount.toLowerCase() ||
+              tx.from.toLowerCase() === currentAccount.toLowerCase()
+          )
 
-        setTransactions(decodedBbkTransactions)
+          const bbkTransfersForCurrentAccountDecoded = bbkTransfersForCurrentAccount.map(
+            tx => ({
+              type: abiDecoder.decodeMethod(tx.input),
+              ...tx,
+            })
+          )
+
+          setError(null)
+          setTransactions(bbkTransfersForCurrentAccountDecoded)
+        }
       }
     }
 
     _useBbkTransactions()
-  }, [AccessToken, BrickblockToken, currentAccount])
+  }, [AccessToken, BrickblockToken, currentAccount, networkName])
 
-  return transactions
+  return { error, transactions }
 }
 
 export default useBbkTransactions
