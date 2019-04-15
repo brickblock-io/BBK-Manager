@@ -7,6 +7,7 @@ import useBbkBalances from 'hooks/use-bbk-balances'
 // Utils
 import { withSnackbar } from 'notistack'
 import compose from '@ramda/compose'
+import { truncateHash } from '@brickblock/web3-utils'
 import reportError from 'utils/report-error'
 
 // Components
@@ -78,7 +79,9 @@ export const ManageBbk = (props: PropsT) => {
     enqueueSnackbar(approveTokensError, { variant: 'error' })
     reportError(
       new Error(
-        `Couldn't approve AccessToken contract to lock BBK tokens for '${currentAccount}': ${approveTokensError}`
+        `Couldn't approve AccessToken contract to lock BBK tokens for '${truncateHash(
+          currentAccount
+        )}': ${approveTokensError}`
       )
     )
   }
@@ -87,7 +90,9 @@ export const ManageBbk = (props: PropsT) => {
     enqueueSnackbar(lockTokensError, { variant: 'error' })
     reportError(
       new Error(
-        `Couldn't lock BBK tokens for '${currentAccount}': ${lockTokensError}`
+        `Couldn't lock BBK tokens for '${truncateHash(
+          currentAccount
+        )}': ${lockTokensError}`
       )
     )
   }
@@ -96,7 +101,9 @@ export const ManageBbk = (props: PropsT) => {
     enqueueSnackbar(unlockTokensError, { variant: 'error' })
     reportError(
       new Error(
-        `Couldn't unlock BBK tokens for '${currentAccount}': ${unlockTokensError}`
+        `Couldn't unlock BBK tokens for '${truncateHash(
+          currentAccount
+        )}': ${unlockTokensError}`
       )
     )
   }
@@ -105,7 +112,9 @@ export const ManageBbk = (props: PropsT) => {
     enqueueSnackbar(balances.locked.error, { variant: 'error' })
     reportError(
       new Error(
-        `Couldn't fetch locked BBK balance for '${currentAccount}': ${String(
+        `Couldn't fetch locked BBK balance for '${truncateHash(
+          currentAccount
+        )}': ${String(
           // $FlowIgnore because we're checking for existence of balances.locked.error in the above if-statement
           balances.locked.error
         )}`
@@ -119,7 +128,9 @@ export const ManageBbk = (props: PropsT) => {
     })
     reportError(
       new Error(
-        `Couldn't fetch unlocked BBK balance for '${currentAccount}': ${String(
+        `Couldn't fetch unlocked BBK balance for '${truncateHash(
+          currentAccount
+        )}': ${String(
           // $FlowIgnore because we're checking for existence of balances.locked.error in the above if-statement
           balances.unlocked.error
         )}`

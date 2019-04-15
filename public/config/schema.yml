@@ -5,6 +5,7 @@ type: object
 title: Schema for the issuer-dashboard config
 required:
   - sentry
+  - etherscan
 properties:
   sentry:
     $id: '#/properties/sentry'
@@ -21,3 +22,16 @@ properties:
         default: https://<replace-me-with-a-real-dsn>@sentry.io
         examples:
           - https://12345678999999999999999999999999@sentry.io/1234567
+  etherscan:
+    $id: '#/properties/etherscan'
+    type: object
+    title: The Etherscan Schema
+    required:
+      - apiKey
+    properties:
+      dsn:
+        $id: '#/properties/etherscan/properties/apiKey'
+        type: string
+        title: The Etherscan API key, needed to talk to the Etherscan API for fetching transaction data
+        examples:
+          - ABCDEF123456789AAAAAAAAAAAAAAAAAAA

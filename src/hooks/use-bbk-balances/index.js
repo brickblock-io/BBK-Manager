@@ -2,7 +2,7 @@
 import { useEffect, useReducer } from 'react'
 
 // Hooks
-import { useContract, useInterval } from '@brickblock/web3'
+import { useContract, useInterval } from '@brickblock/web3-utils'
 
 // Data
 import reducer, { initialState } from './reducer'

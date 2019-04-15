@@ -7,7 +7,7 @@ import {
   etherscanAddressLink,
   truncateHash,
   weiToEth,
-} from '@brickblock/web3'
+} from '@brickblock/web3-utils'
 
 // Types
 import type { ERC20TransferTransactionT } from 'types'

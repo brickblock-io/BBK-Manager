@@ -6,6 +6,7 @@ import useActBalanceOf from './use-act-balance-of'
 
 // Utils
 import reportError from 'utils/report-error'
+import { truncateHash } from '@brickblock/web3-utils'
 
 // Components
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -45,9 +46,9 @@ export const ManageAct = (props: PropsT) => {
   if (balance && balance.error) {
     reportError(
       new Error(
-        `Couldn't fetch locked ACT balance for '${currentAccount}': ${
-          balance.error
-        }`
+        `Couldn't fetch locked ACT balance for '${truncateHash(
+          currentAccount
+        )}': ${String(balance.error)}`
       )
     )
   }

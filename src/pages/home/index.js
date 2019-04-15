@@ -5,7 +5,7 @@ import React, { useContext } from 'react'
 import { Web3Context } from 'app'
 
 // Hooks
-import { useContractRegistry } from '@brickblock/web3'
+import { useContractRegistry } from '@brickblock/web3-utils'
 
 // Components
 import Card from '@material-ui/core/Card'
@@ -26,7 +26,15 @@ import type { ComponentType } from 'react'
 type PropsT = {| classes: { [string]: string } |}
 
 export const Home = (props: PropsT) => {
-  const { currentProvider, networkName } = useContext(Web3Context)
+  const {
+    currentAccount,
+    currentProvider,
+    error,
+    isUnlocked,
+    networkId,
+    networkName,
+    providerName,
+  } = useContext(Web3Context)
   const { contractRegistry } = useContractRegistry(currentProvider)
 
   const { classes } = props
@@ -42,31 +50,37 @@ export const Home = (props: PropsT) => {
         BBK Manager
       </Typography>
 
-      <Web3Container>
-        {({ currentAccount }) => (
-          <Grid className={classes.root} container spacing={16}>
-            <Grid item sm={6} xs={12}>
-              <ManageBbk
-                contractRegistry={contractRegistry}
-                currentAccount={currentAccount}
-                networkName={networkName}
-                web3Provider={currentProvider}
-              />
-            </Grid>
-
-            <Grid item sm={6} xs={12}>
-              <Card className={classes.wrapper}>
-                <CardContent>
-                  <ManageAct
-                    contractRegistry={contractRegistry}
-                    currentAccount={currentAccount}
-                    web3Provider={currentProvider}
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
+      <Web3Container
+        currentAccount={currentAccount}
+        currentProvider={currentProvider}
+        error={error}
+        isUnlocked={isUnlocked}
+        networkId={networkId}
+        networkName={networkName}
+        providerName={providerName}
+      >
+        <Grid className={classes.root} container spacing={16}>
+          <Grid item sm={6} xs={12}>
+            <ManageBbk
+              contractRegistry={contractRegistry}
+              currentAccount={currentAccount}
+              networkName={networkName}
+              web3Provider={currentProvider}
+            />
           </Grid>
-        )}
+
+          <Grid item sm={6} xs={12}>
+            <Card className={classes.wrapper}>
+              <CardContent>
+                <ManageAct
+                  contractRegistry={contractRegistry}
+                  currentAccount={currentAccount}
+                  web3Provider={currentProvider}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Web3Container>
     </>
   )

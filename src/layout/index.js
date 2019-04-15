@@ -5,7 +5,7 @@ import React, { useContext } from 'react'
 import { Web3Context } from 'app'
 
 // Utils
-import { etherscanAddressLink, truncateHash } from '@brickblock/web3'
+import { etherscanAddressLink, truncateHash } from '@brickblock/web3-utils'
 
 // Components
 import Grid from '@material-ui/core/Grid'
@@ -50,7 +50,9 @@ export const Layout = (props: PropsT) => {
                 variant="text"
               >
                 Current Account:&nbsp;
-                {truncateHash(currentAccount)}
+                {currentAccount !== 'loading'
+                  ? truncateHash(currentAccount)
+                  : 'loading...'}
               </Button>
             ) : (
               `No Active Ethereum Account`

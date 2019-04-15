@@ -883,22 +883,29 @@
   resolved "https://registry.yarnpkg.com/@brickblock/smart-contracts/-/smart-contracts-6.1.0.tgz#54db040a6e727eef29bc7a8778ee2580b0218ace"
   integrity sha512-WBFoVozVRNZrxaTmodkvcSJrrV/NWl+y5Cipf60wAGI264jUqz8ODRaa1DeuJ+guUdNs6vqZlkd4N3M3m79qMw==
 
-"@brickblock/strong-config-browser@^1.0.6":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@brickblock/strong-config-browser/-/strong-config-browser-1.1.1.tgz#25d2f6604f6a0f4cba27527fd4f1d24ad3424e36"
-  integrity sha512-NP4bCRMl8F/wOvpgasjn+zRP3ZjF9ELSCyC+9HLCY9HR3FTlYGX23Yvz/lQHnj0RduPF+HP9OE29Sowhu26t5w==
+"@brickblock/strong-config-browser@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@brickblock/strong-config-browser/-/strong-config-browser-1.2.1.tgz#025d40613c3a2107d9bc8e44f36dc4e30a86cb88"
+  integrity sha512-bWFa61oEz2HMjUIyQjeDxHTcovETtKpX6eUB5vtQq4dW4LOI79zeMitNkwgHXtNSwLo4Lk0pFeHGhh14oklzbg==
   dependencies:
     "@babel/runtime" "^7.4.2"
     ajv "^6.10.0"
     axios "^0.18.0"
     js-yaml "^3.13.0"
 
-"@brickblock/styleguide@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@brickblock/styleguide/-/styleguide-3.2.3.tgz#58a38b14f202561e553858196d01f8a09e62cce6"
-  integrity sha512-erwM4hsmYqD7kdZF+04+HCaxazJG7ryDeFPxAsE4oKb09ex7MRX+FMqi+BqdtHzY0062JtrHNE76tbWdeVGi/w==
+"@brickblock/styleguide@^3.2.4":
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/@brickblock/styleguide/-/styleguide-3.2.4.tgz#4523541b80d60294393fdca054c681b71dab9906"
+  integrity sha512-Svft5aNAWI+zTSd4C6jSHBeTbt6512R5l5GBNdKOHaeRM+YhJgWcMMlO+np8+mlvJTLHAB6k9qnDaSGgtDTVxg==
   dependencies:
     markdown-to-jsx "^6.9.0"
+
+"@brickblock/web3-utils@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@brickblock/web3-utils/-/web3-utils-1.0.2.tgz#288ab73dbcf96e4f9938688a2cd9ba4f51ba071b"
+  integrity sha512-Pr54TaWxosISGsEv5vpZ5b8sZWIJx4W+ix4KKUi5k5yHHdEELPoXmooKR/OQitQglZXwGXanM/y7vX24ClXBVw==
+  dependencies:
+    web3-utils "^1.0.0-beta.52"
 
 "@commitlint/cli@^7.5.2":
   version "7.5.2"
@@ -1154,42 +1161,42 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sentry/browser@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.0.7.tgz#50932313e5949d086c5537663390fe7d84588edd"
-  integrity sha512-/vaC+oJkZzDK0hIqX5L6fSPn5KZupqv8QW6Svhs5CrPgEFEpIY0CKY4CQyUpq8KysXayKHtkEfEDt3xbxlW3gg==
+"@sentry/browser@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.0.8.tgz#12350d1e1d0881eb4641f44ffa8ddcefb2b03217"
+  integrity sha512-hMV3mF8R3YZ0IhkjdYMSNdPfC2XbImCL88Mqxkc53KPGMes/8psPd40aWChRcMw0qJIovgezAdn41oxMH8XimQ==
   dependencies:
-    "@sentry/core" "5.0.7"
+    "@sentry/core" "5.0.8"
     "@sentry/types" "5.0.6"
-    "@sentry/utils" "5.0.7"
+    "@sentry/utils" "5.0.8"
     tslib "^1.9.3"
 
-"@sentry/core@5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-5.0.7.tgz#231d2f1105bdbb1dde95bfc04803d6f06a7b62d8"
-  integrity sha512-rXBn5F4JOKV/vDptql1BA7PAPOGffQsl2CfgFnT5k72mJRVZuLYtfY3Ubzgd3SggHrAkEb7kkiqGnjCPfg53wg==
+"@sentry/core@5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-5.0.8.tgz#8a05f1c024cda726b4cabeb2e56c5a6e3857e475"
+  integrity sha512-LGTPMx4PqSOCUiUjHZ45kwealcqAnHgUZonnIv8pcqd1NmY5oOUAhI/rO60Yj9Ij6TVaSHppWpYHI7Wt9Ot6kQ==
   dependencies:
-    "@sentry/hub" "5.0.7"
-    "@sentry/minimal" "5.0.7"
+    "@sentry/hub" "5.0.8"
+    "@sentry/minimal" "5.0.8"
     "@sentry/types" "5.0.6"
-    "@sentry/utils" "5.0.7"
+    "@sentry/utils" "5.0.8"
     tslib "^1.9.3"
 
-"@sentry/hub@5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-5.0.7.tgz#7fdcad68b487680c963fefa516bfbaf2101a09ba"
-  integrity sha512-eiuOOxcgfl/NjxkG6IlAdrxz6R5RYNQmSlzvov/fsW/a6cxwyBZggHnfeUBpepU1fr1cf6DAqCP5nLTBDyDOUg==
+"@sentry/hub@5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-5.0.8.tgz#9a229c4afee0b59a238b7c804d20369e7d3346b2"
+  integrity sha512-a9+hnYO42Rpdk7lrxk3dhmZYfOGMDEq2WP2blNiKIU2efI6CQ3G9Ka/6WzVOXSgV3rY+4zx60vHUhNkQVgsbsg==
   dependencies:
     "@sentry/types" "5.0.6"
-    "@sentry/utils" "5.0.7"
+    "@sentry/utils" "5.0.8"
     tslib "^1.9.3"
 
-"@sentry/minimal@5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-5.0.7.tgz#09c555f54e3be34871eea708f44ba6557a80ca89"
-  integrity sha512-u53v2blQhlEn4R7Szj8xUXf8CQASupLjGDPcqUQisJu1y9aMm88GBfX9zbAalmMYeHavH+VQgkJH8gymMC9/AQ==
+"@sentry/minimal@5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-5.0.8.tgz#21a6521dfbc02d098ae604813e90d945fec6c820"
+  integrity sha512-MP5bFuqC0xMWT9LTkX0rkX1Xxlj3G4zKdhF8rxwM9YLZUUmS5vvNs/AiPGaEAlw8i9C+0TBTcvQt3va2qVVEHA==
   dependencies:
-    "@sentry/hub" "5.0.7"
+    "@sentry/hub" "5.0.8"
     "@sentry/types" "5.0.6"
     tslib "^1.9.3"
 
@@ -1198,10 +1205,10 @@
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-5.0.6.tgz#df1b318977e5308741049cc4f35986cf8255115f"
   integrity sha512-EJYzjfnTfTQgqR3p6dSvIVZe0xe2Jz+tSmvuPABf7VoCmrFtEYkMCSf5IshMHeebmXUS5prrPSCAgVcIrJC+Bw==
 
-"@sentry/utils@5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-5.0.7.tgz#3704841d05de0b2ad0ef8b0192b96144ca273100"
-  integrity sha512-0BanwOMg7uTSvsGvi4zb9Ru1+g5dTMMags3Y1B4sZ88g4IGc3DOjtRZ1PCTyfj/gvGqzWoXc3MCxTzmXxTOjjw==
+"@sentry/utils@5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-5.0.8.tgz#3dcc95b84fef1a862236c9950c257322817bf0da"
+  integrity sha512-NZUVl3i2Rm5WKgPEb0DSPYTMQsCxdbZXOiOEq2/9Ee1bY29VTzmjM08KZTYI8+ZiUJwB2l3y/nvNGkqlEoXQCg==
   dependencies:
     "@sentry/types" "5.0.6"
     tslib "^1.9.3"
@@ -2462,12 +2469,7 @@ bluebird@~3.4.1:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.7.tgz#f72d760be09b7f76d08ed8fae98b289a8d05fab3"
   integrity sha1-9y12C+Cbf3bQjtj66Ysomo0F+rM=
 
-bn.js@4.11.6:
-  version "4.11.6"
-  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
-  integrity sha1-UzRK2xRhehP26N0s4okF0cC6MhU=
-
-bn.js@4.11.8, bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.11.0, bn.js@^4.11.1, bn.js@^4.11.3, bn.js@^4.11.6, bn.js@^4.11.8, bn.js@^4.4.0:
+bn.js@4.11.6, bn.js@4.11.8, bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.11.0, bn.js@^4.11.1, bn.js@^4.11.3, bn.js@^4.11.6, bn.js@^4.11.8, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
@@ -5634,10 +5636,10 @@ flow-annotation-check@1.8.1:
     glob "7.1.1"
     load-pkg "^3.0.1"
 
-flow-bin@^0.96.0:
-  version "0.96.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.96.0.tgz#3b0379d97304dc1879ae6db627cd2d6819998661"
-  integrity sha512-OSxERs0EdhVxEVCst/HmlT/RcnXsQQIRqcfK9J9wC8/93JQj+xQz4RtlsmYe1PSRYaozuDLyPS5pIA81Zwzaww==
+flow-bin@^0.97.0:
+  version "0.97.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.97.0.tgz#036ffcfc27503367a9d906ec9d843a0aa6f6bb83"
+  integrity sha512-jXjD05gkatLuC4+e28frH1hZoRwr1iASP6oJr61Q64+kR4kmzaS+AdFBhYgoYS5kpoe4UzwDebWK8ETQFNh00w==
 
 flow-coverage-report@^0.6.1:
   version "0.6.1"
@@ -10708,10 +10710,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-"prettier@>= 1":
-  version "1.16.4"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.4.tgz#73e37e73e018ad2db9c76742e2647e21790c9717"
-  integrity sha512-ZzWuos7TI5CKUeQAtFd6Zhm2s6EpAD/ZLApIhsF9pRvRtM1RFo61dM/4MSRUA0SuLugA/zgrZD8m0BaY46Og7g==
+prettier@^1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.17.0.tgz#53b303676eed22cc14a9f0cec09b477b3026c008"
+  integrity sha512-sXe5lSt2WQlCbydGETgfm1YBShgOX4HxQkFPvbxkcwgDvGDeqVau8h+12+lmSVlP3rHPz0oavfddSZg/q+Szjw==
 
 pretty-bytes@^4.0.2:
   version "4.0.2"

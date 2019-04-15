@@ -1,2 +1,6 @@
 sentry:
   dsn: https://ef82ae0d5d204fd2a2a1285e3a247c7a@sentry.io/1418025
+etherscan:
+  # This API key can only read public blockchain data and is therefore not considered "secret"
+  # Check https://etherscan.io/apis for what can be done with this key
+  apiKey: 9GA7GG9EZNRKW5EDTZQYAAN7I3VM85ARXX

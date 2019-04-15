@@ -2,12 +2,12 @@
 import { useContext, useEffect, useState } from 'react'
 
 // Data
+import { ConfigContext } from '@brickblock/strong-config-browser'
 import { Web3Context } from 'app'
 
 // Utils
 import axios from 'axios'
 import abiDecoder from 'abi-decoder'
-import getEnvVar from 'utils/get-env-var'
 
 // Types
 import type { AbstractContractT } from 'truffle-contract'
@@ -25,6 +25,7 @@ export const useBbkTransactions: UseBbkTransactionsT = ({
   BrickblockToken,
 }) => {
   const { currentAccount, networkName } = useContext(Web3Context)
+  const { config } = useContext(ConfigContext)
   const [transactions, setTransactions] = useState(null)
   const [error, setError] = useState(null)
 
@@ -53,9 +54,9 @@ export const useBbkTransactions: UseBbkTransactionsT = ({
         }
 
         const etherscanApiResponse = await axios.get(
-          `${etherscanBaseUrl}/api?module=account&action=tokentx&address=${currentAccount}&startblock=0&endblock=999999999&sort=desc&apikey=${getEnvVar(
-            'REACT_APP_ETHERSCAN_API_KEY'
-          )}`
+          `${etherscanBaseUrl}/api?module=account&action=tokentx&address=${currentAccount}&startblock=0&endblock=999999999&sort=desc&apikey=${
+            config.etherscan.apiKey
+          }`
         )
 
         const allErc20Transactions = etherscanApiResponse.data.result
@@ -91,7 +92,13 @@ export const useBbkTransactions: UseBbkTransactionsT = ({
     }
 
     _useBbkTransactions()
-  }, [AccessToken, BrickblockToken, currentAccount, networkName])
+  }, [
+    AccessToken,
+    BrickblockToken,
+    config.etherscan.apiKey,
+    currentAccount,
+    networkName,
+  ])
 
   return { error, transactions }
 }

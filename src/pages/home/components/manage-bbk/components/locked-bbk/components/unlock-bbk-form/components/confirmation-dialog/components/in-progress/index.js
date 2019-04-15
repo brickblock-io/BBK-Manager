@@ -2,7 +2,7 @@
 import React from 'react'
 
 // Utils
-import { etherscanTxLink, truncateHash } from '@brickblock/web3'
+import { etherscanTxLink, truncateHash } from '@brickblock/web3-utils'
 
 // Styles && Assets
 import { withStyles } from '@material-ui/core'

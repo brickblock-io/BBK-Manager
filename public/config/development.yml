@@ -1,2 +1,4 @@
 sentry:
   dsn: https://ef82ae0d5d204fd2a2a1285e3a247c7a@sentry.io/1418025
+etherscan:
+  apiKey: 9GA7GG9EZNRKW5EDTZQYAAN7I3VM85ARXX

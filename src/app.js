@@ -3,7 +3,7 @@ import React from 'react'
 
 // Providers
 import { SnackbarProvider } from 'notistack'
-import { useWeb3 } from '@brickblock/web3'
+import { useWeb3 } from '@brickblock/web3-utils'
 
 // Components
 import { Button, theme } from '@brickblock/styleguide'
@@ -29,7 +29,7 @@ export const Web3Context = React.createContext<Web3ContextT>({
   networkId: 'loading',
   networkName: 'loading',
   providerName: 'loading',
-  web3Error: null,
+  error: null,
 })
 
 const App = () => {
@@ -40,7 +40,7 @@ const App = () => {
     networkId,
     networkName,
     providerName,
-    web3Error,
+    error,
   } = useWeb3()
 
   return (
@@ -64,7 +64,7 @@ const App = () => {
             networkId,
             networkName,
             providerName,
-            web3Error,
+            error,
           }}
         >
           <Layout>
