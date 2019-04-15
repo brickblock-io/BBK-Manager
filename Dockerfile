@@ -17,6 +17,8 @@ RUN yarn install --frozen-lockfile
 COPY . /app
 RUN yarn build
 
-FROM abiosoft/caddy
+# caddy isn't too disciplined with properly tagging their images so we have to use 'latest' here :-/
+# hadolint ignore=DL3007
+FROM abiosoft/caddy:latest
 COPY --from=build /app/build /srv
 COPY Caddyfile /etc/Caddyfile

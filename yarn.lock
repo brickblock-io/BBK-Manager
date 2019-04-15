@@ -894,16 +894,16 @@
     js-yaml "^3.13.0"
 
 "@brickblock/styleguide@^3.2.4":
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/@brickblock/styleguide/-/styleguide-3.2.4.tgz#4523541b80d60294393fdca054c681b71dab9906"
-  integrity sha512-Svft5aNAWI+zTSd4C6jSHBeTbt6512R5l5GBNdKOHaeRM+YhJgWcMMlO+np8+mlvJTLHAB6k9qnDaSGgtDTVxg==
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@brickblock/styleguide/-/styleguide-3.3.0.tgz#6db2233cad1a1e5dc4e906f83497bb97d9b3b199"
+  integrity sha512-Y22zRA/8jwBL+YONeIhD1U3jRXAa+Dt23DqzVThqvhUGhygsN/eJKQXB6rHX3o1szygSM9y0bugxLnziKA4fcA==
   dependencies:
     markdown-to-jsx "^6.9.0"
 
 "@brickblock/web3-utils@^1.0.1":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@brickblock/web3-utils/-/web3-utils-1.0.3.tgz#d8c6a805222d63a0932b0876bd2ed2704d6c6e09"
-  integrity sha512-WuelY95256ltYKI1q8mgXL5OdUH4ek4JadOAc6pLCPVbhRWwoChH3SxzbZCSNdZ6uqZt0ZekvWyJ3Lool36cfw==
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@brickblock/web3-utils/-/web3-utils-1.0.4.tgz#5e7a74b0489951f000aca57d1cfe174eb1a95aef"
+  integrity sha512-zutw7u2ZmMRc0NsfvOzQzugG+cy3Ei2oVyiETB1FG1W2D1H80JjhQ7u6HBHGHabhwdIMsnfM7bFEawKVP52Czg==
   dependencies:
     web3-utils "^1.0.0-beta.52"
 
@@ -8645,9 +8645,9 @@ markdown-it@8.4.2:
     uc.micro "^1.0.5"
 
 markdown-to-jsx@^6.9.0:
-  version "6.9.2"
-  resolved "https://registry.yarnpkg.com/markdown-to-jsx/-/markdown-to-jsx-6.9.2.tgz#112644d4270d1aa1a56a05d53a9c2e668097e49f"
-  integrity sha512-Rjd3AvcGjrwkjGGLrYNa2+4mnsEfu9LZqcafQU3I37f1gB3qOxstQ35T4/jDZyqmi3f6kzGIsz7/ijpxzp52FA==
+  version "6.9.3"
+  resolved "https://registry.yarnpkg.com/markdown-to-jsx/-/markdown-to-jsx-6.9.3.tgz#31719e3c54517ba9805db81d53701b89f5d2ed7e"
+  integrity sha512-iXteiv317VZd1vk/PBH5MWMD4r0XWekoWCHRVVadBcnCtxavhtfV1UaEaQgq9KyckTv31L60ASh5ZVVrOh37Qg==
   dependencies:
     prop-types "^15.6.2"
     unquote "^1.1.0"
@@ -11111,10 +11111,15 @@ react-feather@^1.1.6:
   resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.6.tgz#2a547e3d5cd5e383d3da0128d593cbdb3c1b32f7"
   integrity sha512-iCofWhTjX+vQwvDmg7o6vg0XrUg1c41yBDZG+l83nz1FiCsleJoUgd3O+kHpOeWMXuPrRIFfCixvcqyOLGOgIg==
 
-react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1:
+react-is@^16.6.3, react-is@^16.7.0:
   version "16.8.4"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.4.tgz#90f336a68c3a29a096a3d648ab80e87ec61482a2"
   integrity sha512-PVadd+WaUDOAciICm/J1waJaSvgq+4rHE/K70j0PFqKhkTBsPv/82UGQJNXAngz1fOQLLxI6z1sEDmJDQhCTAA==
+
+react-is@^16.8.1:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
+  integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
 react-jss@^8.6.1:
   version "8.6.1"
