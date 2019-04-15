@@ -44,4 +44,5 @@ commitlint.config.js
 # explicitly DON'T delete the following files and folders
 !.svgo.yml
 !esm.js.gz
+!tar.gz
 !cypress/**/*
