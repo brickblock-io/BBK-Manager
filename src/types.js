@@ -52,3 +52,17 @@ export type TransactionReceiptT = {|
   transactionHash: string,
   transactionIndex: number,
 |}
+
+export type CurrentProviderT = 'loading' | Proxy<Web3ProviderT> | null
+
+export type Web3ProviderT = {|
+  _metamask: Proxy<{
+    isApproved: Promise<boolean>,
+    isEnabled: Promise<boolean>,
+    isUnlocked: Promise<boolean>,
+  }>,
+  autoRefreshOnNetworkChange: boolean,
+  enable: Promise<void>,
+  networkVersion: string,
+  selectedAddress: string,
+|}

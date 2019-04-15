@@ -11,8 +11,8 @@ import { useContractRegistry } from '@brickblock/web3-utils'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
-import ManageAct from './components/manage-act'
-import ManageBbk from './components/manage-bbk'
+import ManageAct from './manage-act'
+import ManageBbk from './manage-bbk'
 import Typography from '@material-ui/core/Typography'
 import { Web3Container } from '@brickblock/styleguide'
 
@@ -64,8 +64,8 @@ export const Home = (props: PropsT) => {
             <ManageBbk
               contractRegistry={contractRegistry}
               currentAccount={currentAccount}
+              currentProvider={currentProvider}
               networkName={networkName}
-              web3Provider={currentProvider}
             />
           </Grid>
 
@@ -75,7 +75,7 @@ export const Home = (props: PropsT) => {
                 <ManageAct
                   contractRegistry={contractRegistry}
                   currentAccount={currentAccount}
-                  web3Provider={currentProvider}
+                  currentProvider={currentProvider}
                 />
               </CardContent>
             </Card>
