@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 type UseInputFieldT = (
   initialValue?: string,
   options: {
+    maxLength?: number,
     validate?: (value: string) => boolean,
   }
 ) => {|
@@ -12,14 +13,16 @@ type UseInputFieldT = (
 |}
 export const useInputField: UseInputFieldT = (
   initialValue = '',
-  options = { validate: null }
+  options = { maxLength: null, validate: null }
 ) => {
   const [value, setValue] = useState(initialValue)
-  const { validate } = options
+  const { maxLength, validate } = options
 
   const handleChange = event => {
     if (event && event.target && event.target.value) {
-      setValue(event.target.value)
+      if (!maxLength || event.target.value.length <= maxLength) {
+        setValue(event.target.value)
+      }
 
       if (validate && typeof validate === 'function') {
         validate(event.target.value)

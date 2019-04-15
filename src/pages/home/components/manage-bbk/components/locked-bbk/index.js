@@ -50,7 +50,7 @@ export const LockedBbk = (props: PropsT) => {
               handleCleanup={handleCleanup}
               handleSubmit={handleUnlock}
               loading={loading}
-              lockedBbkBalance={lockedBalance.value}
+              lockedBbkBalance={lockedBalance}
               unlockTransactions={unlockTransactions}
             />
           </div>

@@ -10,6 +10,7 @@ export type TransactionsT = $ReadOnlyArray<TransactionT>
 export type BalanceT = {|
   error: ?string,
   value: string,
+  valueAsNumber: number,
   valueInWords: string,
 |}
 

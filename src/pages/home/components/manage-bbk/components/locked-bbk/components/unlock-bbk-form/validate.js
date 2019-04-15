@@ -1,8 +1,10 @@
 // @flow
+import type { BalanceT } from 'types'
+
 export function validate(value: string): boolean {
   const ctx: {|
     hasBalance: boolean,
-    maxValue: string,
+    maxValue: BalanceT,
     setError: (?string) => void,
   |} = this
 
@@ -13,15 +15,17 @@ export function validate(value: string): boolean {
   }
 
   if (!value || value === '0') {
-    ctx.setError(`Please enter a valid amount between 1 and ${ctx.maxValue}`)
+    ctx.setError(
+      `Please enter a valid amount between 1 and ${ctx.maxValue.value}`
+    )
 
     return false
   }
 
-  if (parseInt(value) > parseInt(ctx.maxValue)) {
+  if (parseInt(value) > ctx.maxValue.valueAsNumber) {
     ctx.setError(
       `You can't unlock more than the ${
-        ctx.maxValue
+        ctx.maxValue.value
       } locked BBK available in your current account`
     )
 

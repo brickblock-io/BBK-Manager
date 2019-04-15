@@ -22,7 +22,7 @@ import styles from './styles'
 
 // Types
 import type { ComponentType } from 'react'
-import type { TransactionsT } from 'types'
+import type { BalanceT, TransactionsT } from 'types'
 
 type InjectedPropsT = {| classes: { [string]: string } |}
 
@@ -30,7 +30,7 @@ type OwnPropsT = {|
   handleCleanup: () => void,
   handleSubmit: (amount: string) => void,
   loading: boolean,
-  lockedBbkBalance: string,
+  lockedBbkBalance: BalanceT,
   unlockTransactions: TransactionsT,
 |}
 
@@ -46,7 +46,8 @@ export const UnlockBbkForm = (props: PropsT) => {
     unlockTransactions,
   } = props
 
-  const hasBalance = lockedBbkBalance && lockedBbkBalance !== '0'
+  const hasBalance =
+    lockedBbkBalance.valueAsNumber && lockedBbkBalance.valueAsNumber > 0
 
   const [confirmationDialogOpen, toggleConfirmationDialog] = useState(false)
   const [error, setError] = useState(null)
@@ -57,7 +58,15 @@ export const UnlockBbkForm = (props: PropsT) => {
     setError,
   })
 
-  const { value: amount, handleChange } = useInput('', { validate: _validate })
+  /*
+   * The maxLength prop should "just work" when passed to the MUI TextField component directly...
+   * ...but it doesn't: https://github.com/mui-org/material-ui/issues/1578#issuecomment-476252934
+   * So we need to implement this check ourselves for the time being
+   */
+  const { value: amount, handleChange } = useInput('', {
+    maxLength: 10,
+    validate: _validate,
+  })
 
   const amountInWords: ?string =
     amount && amount.length ? toWords(parseInt(amount)) : ''
@@ -80,7 +89,9 @@ export const UnlockBbkForm = (props: PropsT) => {
               <Tooltip
                 title={
                   hasBalance
-                    ? `How many of your ${lockedBbkBalance} locked BBK tokens do you want to unlock?`
+                    ? `How many of your ${
+                        lockedBbkBalance.value
+                      } locked BBK tokens do you want to unlock?`
                     : "You don't have any locked BBK tokens in your current account"
                 }
               >

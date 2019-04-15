@@ -54,7 +54,7 @@ export const UnlockedBbk = (props: PropsT) => {
               handleSubmit={handleLock}
               loading={loading}
               lockTransactions={lockTransactions}
-              unlockedBbkBalance={unlockedBalance.value}
+              unlockedBbkBalance={unlockedBalance}
             />
           </div>
         ) : (

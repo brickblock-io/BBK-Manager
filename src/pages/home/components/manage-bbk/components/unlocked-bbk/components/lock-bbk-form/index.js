@@ -22,7 +22,7 @@ import styles from './styles'
 
 // Types
 import type { ComponentType } from 'react'
-import type { TransactionsT } from 'types'
+import type { BalanceT, TransactionsT } from 'types'
 
 type InjectedPropsT = {| classes: { [string]: string } |}
 
@@ -32,7 +32,7 @@ type OwnPropsT = {|
   handleSubmit: (amount: string) => void,
   loading: boolean,
   lockTransactions: TransactionsT,
-  unlockedBbkBalance: string,
+  unlockedBbkBalance: BalanceT,
 |}
 
 type PropsT = {| ...InjectedPropsT, ...OwnPropsT |}
@@ -48,7 +48,8 @@ export const LockBbkForm = (props: PropsT) => {
     unlockedBbkBalance,
   } = props
 
-  const hasBalance = Boolean(unlockedBbkBalance && unlockedBbkBalance !== '0')
+  const hasBalance =
+    unlockedBbkBalance.valueAsNumber && unlockedBbkBalance.valueAsNumber > 0
 
   const [confirmationDialogOpen, toggleConfirmationDialog] = useState(false)
   const [error, setError] = useState(null)
@@ -59,7 +60,13 @@ export const LockBbkForm = (props: PropsT) => {
     setError,
   })
 
+  /*
+   * The maxLength prop should "just work" when passed to the MUI TextField component directly...
+   * ...but it doesn't: https://github.com/mui-org/material-ui/issues/1578#issuecomment-476252934
+   * So we need to implement this check ourselves for the time being
+   */
   const { value: amount, handleChange } = useInput('', {
+    maxLength: 10,
     validate: _validate,
   })
 
@@ -84,7 +91,9 @@ export const LockBbkForm = (props: PropsT) => {
               <Tooltip
                 title={
                   hasBalance
-                    ? `How many of your ${unlockedBbkBalance} unlocked BBK tokens do you want to lock?`
+                    ? `How many of your ${
+                        unlockedBbkBalance.value
+                      } unlocked BBK tokens do you want to lock?`
                     : "You don't have any unlocked BBK tokens in your current account"
                 }
               >
