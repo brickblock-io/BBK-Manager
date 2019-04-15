@@ -69,7 +69,7 @@ export const useActBalanceOf: UseActBalanceOfT = ({
           } catch (error) {
             dispatch({
               type: 'set-balance/error',
-              payload: `Couldn't determine unlocked BBK balance for address ${address}\n\n${error}`,
+              payload: error,
             })
           }
         }

@@ -53,7 +53,7 @@ export const getLockedBbkBalance: GetLockedBbkBalanceT = ({
       } catch (error) {
         dispatch({
           type: 'set-locked-balance/error',
-          payload: `Couldn't determine locked BBK balance for address ${address}\n\n${error}`,
+          payload: error,
         })
       }
     }
