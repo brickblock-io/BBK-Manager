@@ -901,9 +901,9 @@
     markdown-to-jsx "^6.9.0"
 
 "@brickblock/web3-utils@^1.0.1":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@brickblock/web3-utils/-/web3-utils-1.0.2.tgz#288ab73dbcf96e4f9938688a2cd9ba4f51ba071b"
-  integrity sha512-Pr54TaWxosISGsEv5vpZ5b8sZWIJx4W+ix4KKUi5k5yHHdEELPoXmooKR/OQitQglZXwGXanM/y7vX24ClXBVw==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@brickblock/web3-utils/-/web3-utils-1.0.3.tgz#d8c6a805222d63a0932b0876bd2ed2704d6c6e09"
+  integrity sha512-WuelY95256ltYKI1q8mgXL5OdUH4ek4JadOAc6pLCPVbhRWwoChH3SxzbZCSNdZ6uqZt0ZekvWyJ3Lool36cfw==
   dependencies:
     web3-utils "^1.0.0-beta.52"
 
