@@ -1,6 +1,7 @@
 // @flow
 import { isBN } from 'web3-utils'
 import formatWeiValue from 'utils/format-wei-value'
+import { truncateHash } from '@brickblock/web3-utils'
 
 // Types
 import type { AbstractContractT } from 'truffle-contract'
@@ -31,7 +32,9 @@ export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
         if (!isBN(rawBalance)) {
           dispatch({
             type: 'set-unlocked-balance/error',
-            payload: `BrickblockToken.balanceOf(${address}) didn't return value of type 'BN'.\nActual value was: ${String(
+            payload: `BrickblockToken.balanceOf(${truncateHash(
+              address
+            )}) didn't return value of type 'BN'.\nActual value was: ${String(
               rawBalance
             )}.\nActual type was ${typeof rawBalance}`,
           })

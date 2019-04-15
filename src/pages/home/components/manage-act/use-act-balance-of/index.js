@@ -2,7 +2,7 @@
 import { useEffect, useReducer } from 'react'
 
 // Hooks
-import { useContract } from '@brickblock/web3-utils'
+import { useContract, truncateHash } from '@brickblock/web3-utils'
 
 // Data
 import reducer, { initialState } from './reducer'
@@ -52,7 +52,9 @@ export const useActBalanceOf: UseActBalanceOfT = ({
             if (!isBN(rawBalance)) {
               dispatch({
                 type: 'set-balance/error',
-                payload: `AccessToken.balanceOf(${address}) didn't return value of type 'BN'. Actual value was: ${rawBalance}`,
+                payload: `AccessToken.balanceOf(${truncateHash(
+                  address
+                )}) didn't return value of type 'BN'. Actual value was: ${rawBalance}`,
               })
 
               return
