@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react'
 
 // Hooks
-import useBbkBalances from './use-bbk-balances'
+import useBbk from './use-bbk'
 
 // Utils
 import { useSnackbar } from 'notistack'
@@ -20,7 +20,7 @@ import styles from './styles'
 
 // Types
 import type { ComponentType } from 'react'
-import type { BBKContextT } from './use-bbk-balances'
+import type { BBKContextT } from './use-bbk'
 import type { AbstractContractT } from 'truffle-contract'
 import type { CurrentProviderT } from 'types'
 
@@ -68,7 +68,7 @@ export const ManageBbk = (props: PropsT) => {
     networkName,
   } = props
 
-  const bbkContext = useBbkBalances({
+  const bbkContext = useBbk({
     address: currentAccount,
     currentProvider,
     contractRegistry,

@@ -2,7 +2,7 @@
 import React, { useContext, useState } from 'react'
 
 // Data
-import { BBKContext } from 'pages/home/manage-bbk'
+import { ACTContext } from 'pages/home/manage-act'
 
 // Hooks
 import useInput from 'hooks/use-input'
@@ -32,28 +32,35 @@ type OwnPropsT = {||}
 
 type PropsT = {| ...InjectedPropsT, ...OwnPropsT |}
 
-export const UnlockBbkForm = (props: PropsT) => {
+export const ConvertActToEthForm = (props: PropsT) => {
   const { classes } = props
 
+  /*
+   * Hooks
+   */
   const {
-    balances,
-    handleUnlockTokens: handleSubmit,
-    handleUnlockTokensCleanup: handleCleanup,
-    unlockTokensLoading: loading,
-    unlockTokensTransactions: transactions,
-  } = useContext(BBKContext)
-
-  const hasBalance =
-    balances.locked &&
-    balances.locked.valueAsNumber &&
-    balances.locked.valueAsNumber > 0
+    state,
+    handleConvertActToEth: handleSubmit,
+    handleCleanup,
+  } = useContext(ACTContext)
 
   const [confirmationDialogOpen, toggleConfirmationDialog] = useState(false)
   const [error, setError] = useState(null)
 
+  /*
+   * Helpers
+   */
+  const {
+    balance,
+    convertActToEth: { loading, transactions },
+  } = state
+
+  const hasBalance =
+    balance && balance.valueAsNumber && balance.valueAsNumber > 0
+
   const _validate = validate.bind({
     hasBalance,
-    maxValue: balances.locked,
+    maxValue: balance,
     setError,
   })
 
@@ -89,9 +96,9 @@ export const UnlockBbkForm = (props: PropsT) => {
                 title={
                   hasBalance
                     ? `How many of your ${String(
-                        balances.locked && balances.locked.value
-                      )} locked BBK tokens do you want to unlock?`
-                    : "You don't have any locked BBK tokens in your current account"
+                        balance && balance.value
+                      )} ACT do you want to convert to ETH?`
+                    : "You don't have any ACT in your current account"
                 }
               >
                 <InfoOutlined color={hasBalance ? 'primary' : 'disabled'} />
@@ -103,8 +110,8 @@ export const UnlockBbkForm = (props: PropsT) => {
         disabled={loading || !hasBalance}
         error={!!error}
         helperText={error || amountInWords}
-        label="Unlock BBK Tokens"
-        name="unlock-bbk-tokens"
+        label="Convert ACT to ETH"
+        name="convert-act-to-eth"
         onChange={handleChange}
         placeholder="e.g. 1000"
         type="number"
@@ -116,39 +123,39 @@ export const UnlockBbkForm = (props: PropsT) => {
         loading={loading}
         type="submit"
       >
-        Unlock
+        Convert
       </Button>
       <ConfirmationDialog
         amount={amount}
-        buttonText={`Unlock ${amount} BBK`}
-        buttonTextInProgress={`Unlocking ${amount} BBK...`}
+        buttonText={`Convert ${amount} ACT to ETH`}
+        buttonTextInProgress={`Converting ${amount} ACT to ETH...`}
         handleCleanup={handleCleanup}
         handleSubmit={handleSubmit}
         loading={loading}
         open={confirmationDialogOpen}
-        successMessage={`Successfully unlocked ${amount} BBK tokens`}
-        title={`Do you want to unlock ${amount} BBK now?`}
+        successMessage={`Successfully converted ${amount} ACT tokens`}
+        title={`Do you want to convert ${amount} ACT now?`}
         toggleDialog={toggleConfirmationDialog}
         transactions={transactions}
       >
-        Clicking the &quot;Unlock BBK&quot; button will ask you to sign a
-        MetaMask transactions that will unlock {amount} BBK tokens from the
-        AccessToken contract back into your current account.
+        Clicking the &quot;Convert ACT to ETH&quot; button will ask you to sign
+        a MetaMask transactions that will convert {amount} ACT to ETH for a
+        ratio of 1000 ACT for 1 ETH.
         <br />
         <br />
-        Unlocked BBK tokens can be freely transferred, but will no longer
-        generate ACT tokens.
+        The converted ACT will be deducted from your balance after successful
+        conversion into ETH.
       </ConfirmationDialog>
     </form>
   )
 }
 
-UnlockBbkForm.displayName = 'UnlockBbkForm'
+ConvertActToEthForm.displayName = 'ConvertActToEthForm'
 
 const exportedComponent: ComponentType<OwnPropsT> = withStyles(styles)(
-  UnlockBbkForm
+  ConvertActToEthForm
 )
 
-exportedComponent.displayName = 'UnlockBbkFormHOC'
+exportedComponent.displayName = 'ConvertActToEthFormHOC'
 
 export default exportedComponent
