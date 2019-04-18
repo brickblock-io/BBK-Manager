@@ -25,7 +25,7 @@ export const LockedBbk = (props: PropsT) => {
     <Card className={classes.card}>
       <CardContent>
         <Typography gutterBottom variant="h2">
-          Your Locked BBK
+          Unlock BBK
         </Typography>
 
         {balances.locked ? (

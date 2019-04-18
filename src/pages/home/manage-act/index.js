@@ -89,7 +89,7 @@ export const ManageAct = (props: PropsT) => {
       <Card>
         <CardContent>
           <Typography gutterBottom variant="h2">
-            Your ACT
+            Sell ACT
           </Typography>
 
           {balance && !balance.error ? (
