@@ -8,6 +8,7 @@ import { initialState } from './use-act/reducer'
 // Utils
 import reportError from 'utils/report-error'
 import { truncateHash } from '@brickblock/web3-utils'
+import { useSnackbar } from 'notistack'
 
 // Components
 import Card from '@material-ui/core/Card'
@@ -54,13 +55,14 @@ export const ManageAct = (props: PropsT) => {
   const {
     state: { balance, sellActForEth },
   } = actContext
-
+  const { enqueueSnackbar } = useSnackbar()
 
   if (!contractRegistry || !currentAccount || !currentProvider) {
     return 'Loading...'
   }
 
   if (balance && balance.error) {
+    enqueueSnackbar(balance.error, { variant: 'error' })
     reportError(
       new Error(
         `Couldn't fetch ACT balance for '${truncateHash(
@@ -72,6 +74,7 @@ export const ManageAct = (props: PropsT) => {
   }
 
   if (sellActForEth.error) {
+    enqueueSnackbar(sellActForEth.error, { variant: 'error' })
     reportError(
       new Error(
         `Couldn't sell ACT for '${truncateHash(currentAccount)}': ${String(
