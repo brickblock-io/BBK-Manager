@@ -19,36 +19,36 @@ type ResetBalanceT = {|
   type: 'reset-balance',
 |}
 
-type ConvertActToEthT = {|
+type SellActForEthT = {|
   payload: string,
-  type: 'convert-act-to-eth',
+  type: 'sell-act-for-eth',
 |}
 
-type ConvertActToEthPendingT = {|
+type SellActForEthPendingT = {|
   payload: string,
-  type: 'convert-act-to-eth/pending',
+  type: 'sell-act-for-eth/pending',
 |}
 
-type ConvertActToEthSuccessT = {|
+type SellActForEthSuccessT = {|
   payload: TransactionReceiptT,
-  type: 'convert-act-to-eth/success',
+  type: 'sell-act-for-eth/success',
 |}
 
-type ConvertActToEthErrorT = {|
+type SellActForEthErrorT = {|
   payload: string,
-  type: 'convert-act-to-eth/error',
+  type: 'sell-act-for-eth/error',
 |}
 
-type ConvertActToEthCleanupT = {|
-  type: 'convert-act-to-eth/cleanup',
+type SellActForEthCleanupT = {|
+  type: 'sell-act-for-eth/cleanup',
 |}
 
 export type ActionsT =
   | SetBalanceT
   | SetBalanceErrorT
   | ResetBalanceT
-  | ConvertActToEthT
-  | ConvertActToEthPendingT
-  | ConvertActToEthSuccessT
-  | ConvertActToEthErrorT
-  | ConvertActToEthCleanupT
+  | SellActForEthT
+  | SellActForEthPendingT
+  | SellActForEthSuccessT
+  | SellActForEthErrorT
+  | SellActForEthCleanupT

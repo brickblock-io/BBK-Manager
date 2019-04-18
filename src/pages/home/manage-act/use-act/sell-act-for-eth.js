@@ -12,7 +12,7 @@ import config from 'app.config.js'
 // Types
 import type { TransactionReceiptT } from 'types'
 
-type ConvertActToEthT = ({
+type SellActForEthT = ({
   AccessToken: ?AbstractContractT,
   FeeManager: ?AbstractContractT,
   address: ?string,
@@ -20,7 +20,7 @@ type ConvertActToEthT = ({
   dispatch: ActionsT => void,
 }) => void
 
-export const convertActToEth: ConvertActToEthT = ({
+export const sellActForEth: SellActForEthT = ({
   AccessToken,
   FeeManager,
   amount,
@@ -50,8 +50,8 @@ export const convertActToEth: ConvertActToEthT = ({
       } catch (error) {
         if (error.message === 'INSUFFICIENT_ACT_BALANCE') {
           dispatch({
-            type: 'convert-act-to-eth/error',
-            payload: `Insufficient ACT balance. The maximum amount you can convert is ${
+            type: 'sell-act-for-eth/error',
+            payload: `Insufficient ACT balance. The maximum amount you can sell is ${
               // $FlowIgnore because we're checking that actBalance is not undefined above
               formatWeiValue(actBalance).value
             } ACT, because that's all that is available in this account.`,
@@ -60,7 +60,7 @@ export const convertActToEth: ConvertActToEthT = ({
 
         if (error.message === 'UNKNOWN_BALANCE') {
           dispatch({
-            type: 'convert-act-to-eth/error',
+            type: 'sell-act-for-eth/error',
             payload: "Couldn't determine current ACT balance",
           })
         }
@@ -69,7 +69,7 @@ export const convertActToEth: ConvertActToEthT = ({
       }
 
       /*
-       * Convert ACT to ETH by calling claimFee() on the FeeManager contract
+       * Sell ACT for ETH by calling claimFee() on the FeeManager contract
        */
       try {
         await FeeManager.claimFee
@@ -78,10 +78,10 @@ export const convertActToEth: ConvertActToEthT = ({
             gas: config.DEFAULT_GAS,
           })
           .on('transactionHash', (hash: string) => {
-            dispatch({ type: 'convert-act-to-eth/pending', payload: hash })
+            dispatch({ type: 'sell-act-for-eth/pending', payload: hash })
           })
           .on('receipt', (receipt: TransactionReceiptT) => {
-            dispatch({ type: 'convert-act-to-eth/success', payload: receipt })
+            dispatch({ type: 'sell-act-for-eth/success', payload: receipt })
           })
       } catch (error) {
         if (
@@ -90,14 +90,14 @@ export const convertActToEth: ConvertActToEthT = ({
           )
         ) {
           dispatch({
-            type: 'convert-act-to-eth/error',
+            type: 'sell-act-for-eth/error',
             payload: 'Transaction signature was denied in MetaMask',
           })
         } else {
           dispatch({
-            type: 'convert-act-to-eth/error',
+            type: 'sell-act-for-eth/error',
             payload:
-              "Couldn't convert ACT to ETH. An unexpected error occurred 😕",
+              "Couldn't sell ACT for ETH. An unexpected error occurred 😕",
           })
         }
 
@@ -107,4 +107,4 @@ export const convertActToEth: ConvertActToEthT = ({
   })()
 }
 
-export default convertActToEth
+export default sellActForEth

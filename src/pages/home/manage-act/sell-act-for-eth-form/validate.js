@@ -24,7 +24,7 @@ export function validate(value: string): boolean {
 
   if (parseInt(value) > ctx.maxValue.valueAsNumber) {
     ctx.setError(
-      `You can't convert more than the ${
+      `You can't sell more than the ${
         ctx.maxValue.value
       } ACT available in your current account`
     )

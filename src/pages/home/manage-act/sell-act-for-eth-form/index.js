@@ -32,7 +32,7 @@ type OwnPropsT = {||}
 
 type PropsT = {| ...InjectedPropsT, ...OwnPropsT |}
 
-export const ConvertActToEthForm = (props: PropsT) => {
+export const SellActForEthForm = (props: PropsT) => {
   const { classes } = props
 
   /*
@@ -40,7 +40,7 @@ export const ConvertActToEthForm = (props: PropsT) => {
    */
   const {
     state,
-    handleConvertActToEth: handleSubmit,
+    handleSellActForEth: handleSubmit,
     handleCleanup,
   } = useContext(ACTContext)
 
@@ -52,7 +52,7 @@ export const ConvertActToEthForm = (props: PropsT) => {
    */
   const {
     balance,
-    convertActToEth: { loading, transactions },
+    sellActForEth: { loading, transactions },
   } = state
 
   const hasBalance =
@@ -97,7 +97,7 @@ export const ConvertActToEthForm = (props: PropsT) => {
                   hasBalance
                     ? `How many of your ${String(
                         balance && balance.value
-                      )} ACT do you want to convert to ETH?`
+                      )} ACT do you want to sell for ETH?`
                     : "You don't have any ACT in your current account"
                 }
               >
@@ -110,8 +110,8 @@ export const ConvertActToEthForm = (props: PropsT) => {
         disabled={loading || !hasBalance}
         error={!!error}
         helperText={error || amountInWords}
-        label="Convert ACT to ETH"
-        name="convert-act-to-eth"
+        label="Sell ACT for ETH"
+        name="sell-act-for-eth"
         onChange={handleChange}
         placeholder="e.g. 1000"
         type="number"
@@ -123,39 +123,39 @@ export const ConvertActToEthForm = (props: PropsT) => {
         loading={loading}
         type="submit"
       >
-        Convert
+        Sell
       </Button>
       <ConfirmationDialog
         amount={amount}
-        buttonText={`Convert ${amount} ACT to ETH`}
-        buttonTextInProgress={`Converting ${amount} ACT to ETH...`}
+        buttonText={`Sell ${amount} ACT for ETH`}
+        buttonTextInProgress={`Selling ${amount} ACT for ETH...`}
         handleCleanup={handleCleanup}
         handleSubmit={handleSubmit}
         loading={loading}
         open={confirmationDialogOpen}
-        successMessage={`Successfully converted ${amount} ACT tokens`}
-        title={`Do you want to convert ${amount} ACT now?`}
+        successMessage={`Successfully sold ${amount} ACT tokens`}
+        title={`Do you want to sell ${amount} ACT now?`}
         toggleDialog={toggleConfirmationDialog}
         transactions={transactions}
       >
-        Clicking the &quot;Convert ACT to ETH&quot; button will ask you to sign
-        a MetaMask transactions that will convert {amount} ACT to ETH for a
-        ratio of 1000 ACT for 1 ETH.
+        Clicking the &quot;Sell ACT for ETH&quot; button will ask you to sign a
+        MetaMask transactions that will sell {amount} ACT for ETH for a ratio of
+        1000 ACT for 1 ETH.
         <br />
         <br />
-        The converted ACT will be deducted from your balance after successful
-        conversion into ETH.
+        The sold ACT will be deducted from your balance after successfully
+        selling them for ETH.
       </ConfirmationDialog>
     </form>
   )
 }
 
-ConvertActToEthForm.displayName = 'ConvertActToEthForm'
+SellActForEthForm.displayName = 'SellActForEthForm'
 
 const exportedComponent: ComponentType<OwnPropsT> = withStyles(styles)(
-  ConvertActToEthForm
+  SellActForEthForm
 )
 
-exportedComponent.displayName = 'ConvertActToEthFormHOC'
+exportedComponent.displayName = 'SellActForEthFormHOC'
 
 export default exportedComponent

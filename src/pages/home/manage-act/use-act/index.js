@@ -10,7 +10,7 @@ import reducer, { initialState } from './reducer'
 // Utils
 import { isBN } from 'web3-utils'
 import formatWeiValue from 'utils/format-wei-value'
-import convertActToEth from './convert-act-to-eth'
+import sellActForEth from './sell-act-for-eth'
 
 // Types
 import type { AbstractContractT } from 'truffle-contract'
@@ -20,7 +20,7 @@ import type { CurrentProviderT } from 'types'
 
 export type ACTContextT = {|
   handleCleanup: () => void,
-  handleConvertActToEth: (amount: string) => void,
+  handleSellActForEth: (amount: string) => void,
   state: StateT,
 |}
 
@@ -51,12 +51,12 @@ export const useAct: UseActBalanceOfT = ({
   /*
    * Handlers
    */
-  const handleConvertActToEth = amount => {
-    dispatch({ type: 'convert-act-to-eth', payload: amount })
+  const handleSellActForEth = amount => {
+    dispatch({ type: 'sell-act-for-eth', payload: amount })
   }
 
   const handleCleanup = () => {
-    dispatch({ type: 'convert-act-to-eth/cleanup' })
+    dispatch({ type: 'sell-act-for-eth/cleanup' })
   }
 
   useEffect(
@@ -107,26 +107,26 @@ export const useAct: UseActBalanceOfT = ({
       })()
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [AccessToken, address, state.convertActToEth.transactions]
+    [AccessToken, address, state.sellActForEth.transactions]
   )
 
   useEffect(
-    function convertActToEthEffect() {
+    function sellActForEthEffect() {
       // eslint-disable-next-line no-extra-semi
       ;(async () => {
-        convertActToEth({
+        sellActForEth({
           AccessToken,
           FeeManager,
           address,
-          amount: state.convertActToEth.amount,
+          amount: state.sellActForEth.amount,
           dispatch,
         })
       })()
     },
-    [AccessToken, FeeManager, address, state.convertActToEth.amount]
+    [AccessToken, FeeManager, address, state.sellActForEth.amount]
   )
 
-  return { state, handleConvertActToEth, handleCleanup }
+  return { state, handleSellActForEth, handleCleanup }
 }
 
 export default useAct

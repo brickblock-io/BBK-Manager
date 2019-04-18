@@ -13,7 +13,7 @@ import { truncateHash } from '@brickblock/web3-utils'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import ConvertActForm from './convert-act-form'
+import SellActForEthForm from './sell-act-for-eth-form'
 import Typography from '@material-ui/core/Typography'
 
 // Styles
@@ -27,7 +27,7 @@ import type { AbstractContractT } from 'truffle-contract'
 import type { CurrentProviderT } from 'types'
 
 export const ACTContext = React.createContext<ACTContextT>({
-  handleConvertActToEth: () => {},
+  handleSellActForEth: () => {},
   handleCleanup: () => {},
   state: initialState,
 })
@@ -52,8 +52,9 @@ export const ManageAct = (props: PropsT) => {
   })
 
   const {
-    state: { balance },
+    state: { balance, sellActForEth },
   } = actContext
+
 
   if (!contractRegistry || !currentAccount || !currentProvider) {
     return 'Loading...'
@@ -62,10 +63,20 @@ export const ManageAct = (props: PropsT) => {
   if (balance && balance.error) {
     reportError(
       new Error(
-        `Couldn't fetch locked ACT balance for '${truncateHash(
+        `Couldn't fetch ACT balance for '${truncateHash(
           currentAccount
           // $FlowIgnore because we're checking for existence of balance.error above
         )}': ${String(balance.error)}`
+      )
+    )
+  }
+
+  if (sellActForEth.error) {
+    reportError(
+      new Error(
+        `Couldn't sell ACT for '${truncateHash(currentAccount)}': ${String(
+          sellActForEth.error
+        )}`
       )
     )
   }
@@ -89,7 +100,7 @@ export const ManageAct = (props: PropsT) => {
                   ({balance.valueInWords})
                 </Typography>
               </div>
-              <ConvertActForm />
+              <SellActForEthForm />
             </div>
           ) : (
             <div className={classes.loading}>

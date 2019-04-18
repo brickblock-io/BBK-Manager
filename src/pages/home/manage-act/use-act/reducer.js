@@ -6,7 +6,7 @@ import type { BalanceT, TransactionsT } from 'types'
 
 export type StateT = {|
   balance: ?BalanceT,
-  convertActToEth: {
+  sellActForEth: {
     amount: ?string,
     error: ?string,
     loading: boolean,
@@ -16,7 +16,7 @@ export type StateT = {|
 
 export const initialState: StateT = {
   balance: null,
-  convertActToEth: {
+  sellActForEth: {
     amount: null,
     error: null,
     loading: false,
@@ -41,62 +41,62 @@ export const reducer: ReducerT = (state = initialState, action) => {
       return { ...state, balance: { ...state.balance, error: action.payload } }
 
     /*
-     * Convert ACT to ETH
+     * Sell ACT for ETH
      */
-    case 'convert-act-to-eth':
+    case 'sell-act-for-eth':
       return {
         ...state,
-        convertActToEth: {
+        sellActForEth: {
           amount: action.payload,
           error: null,
           loading: true,
-          transactions: [...state.convertActToEth.transactions],
+          transactions: [...state.sellActForEth.transactions],
         },
       }
 
-    case 'convert-act-to-eth/pending':
+    case 'sell-act-for-eth/pending':
       return assocPath(
-        ['convertActToEth', 'transactions'],
+        ['sellActForEth', 'transactions'],
         [
-          ...state.convertActToEth.transactions,
+          ...state.sellActForEth.transactions,
           { hash: action.payload, current: true, status: 'pending' },
         ],
         state
       )
 
-    case 'convert-act-to-eth/success':
+    case 'sell-act-for-eth/success':
       return {
         ...state,
-        convertActToEth: {
+        sellActForEth: {
           amount: null,
           error: null,
           loading: false,
           transactions: map(
             when(propEq('current', true), assoc('status', 'success'))
-          )(state.convertActToEth.transactions),
+          )(state.sellActForEth.transactions),
         },
       }
 
-    case 'convert-act-to-eth/error':
+    case 'sell-act-for-eth/error':
       return {
         ...state,
-        convertActToEth: {
+        sellActForEth: {
           amount: null,
           error: action.payload,
           loading: false,
 
           transactions: map(
             when(propEq('current', true), assoc('status', 'error'))
-          )(state.convertActToEth.transactions),
+          )(state.sellActForEth.transactions),
         },
       }
 
-    case 'convert-act-to-eth/cleanup':
+    case 'sell-act-for-eth/cleanup':
       return assocPath(
-        ['convertActToEth', 'transactions'],
+        ['sellActForEth', 'transactions'],
         map(
           when(propEq('current', true), dissoc('current')),
-          state.convertActToEth.transactions
+          state.sellActForEth.transactions
         ),
         state
       )
