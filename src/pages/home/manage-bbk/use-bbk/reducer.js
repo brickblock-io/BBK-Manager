@@ -6,44 +6,44 @@ import type { ActionsT } from './actions'
 import type { BalanceT, TransactionsT } from 'types'
 
 export type StateT = {|
+  activateTokens: {
+    amount: ?string,
+    error: ?string,
+    loading: boolean,
+    transactions: TransactionsT,
+  },
+  activated: ?BalanceT,
   approveTokens: {
     amount: ?string,
     error: ?string,
     loading: boolean,
     transactions: TransactionsT,
   },
-  lockTokens: {
+  deactivateTokens: {
     amount: ?string,
     error: ?string,
     loading: boolean,
     transactions: TransactionsT,
   },
-  locked: ?BalanceT,
-  unlockTokens: {
-    amount: ?string,
-    error: ?string,
-    loading: boolean,
-    transactions: TransactionsT,
-  },
-  unlocked: ?BalanceT,
+  deactivated: ?BalanceT,
 |}
 
 export const initialState: StateT = {
-  locked: null,
-  unlocked: null,
+  activated: null,
+  deactivated: null,
   approveTokens: {
     amount: null,
     error: null,
     loading: false,
     transactions: [],
   },
-  lockTokens: {
+  activateTokens: {
     amount: null,
     error: null,
     loading: false,
     transactions: [],
   },
-  unlockTokens: {
+  deactivateTokens: {
     amount: null,
     error: null,
     loading: false,
@@ -64,19 +64,22 @@ export const reducer: ReducerT = (state = initialState, action) => {
     case 'reset-balances':
       return initialState
 
-    case 'set-locked-balance':
-      return { ...state, locked: { error: null, ...action.payload } }
+    case 'set-activated-balance':
+      return { ...state, activated: { error: null, ...action.payload } }
 
-    case 'set-locked-balance/error':
-      return { ...state, locked: { ...state.locked, error: action.payload } }
-
-    case 'set-unlocked-balance':
-      return { ...state, unlocked: { error: null, ...action.payload } }
-
-    case 'set-unlocked-balance/error':
+    case 'set-activated-balance/error':
       return {
         ...state,
-        unlocked: { ...state.unlocked, error: action.payload },
+        activated: { ...state.activated, error: action.payload },
+      }
+
+    case 'set-deactivated-balance':
+      return { ...state, deactivated: { error: null, ...action.payload } }
+
+    case 'set-deactivated-balance/error':
+      return {
+        ...state,
+        deactivated: { ...state.deactivated, error: action.payload },
       }
 
     /*
@@ -141,122 +144,122 @@ export const reducer: ReducerT = (state = initialState, action) => {
       )
 
     /*
-     * Lock tokens
+     * Activate tokens
      */
-    case 'lock-tokens':
+    case 'activate-tokens':
       return {
         ...state,
-        lockTokens: {
+        activateTokens: {
           amount: action.payload,
           error: null,
           loading: true,
-          transactions: [...state.lockTokens.transactions],
+          transactions: [...state.activateTokens.transactions],
         },
       }
 
-    case 'lock-tokens/pending':
+    case 'activate-tokens/pending':
       return assocPath(
-        ['lockTokens', 'transactions'],
+        ['activateTokens', 'transactions'],
         [
-          ...state.lockTokens.transactions,
+          ...state.activateTokens.transactions,
           { hash: action.payload, current: true, status: 'pending' },
         ],
         state
       )
 
-    case 'lock-tokens/success':
+    case 'activate-tokens/success':
       return {
         ...state,
-        lockTokens: {
+        activateTokens: {
           amount: null,
           error: null,
           loading: false,
 
           transactions: map(
             when(propEq('current', true), assoc('status', 'success'))
-          )(state.lockTokens.transactions),
+          )(state.activateTokens.transactions),
         },
       }
 
-    case 'lock-tokens/cleanup':
+    case 'activate-tokens/cleanup':
       return assocPath(
-        ['lockTokens', 'transactions'],
+        ['activateTokens', 'transactions'],
         map(
           when(propEq('current', true), dissoc('current')),
-          state.lockTokens.transactions
+          state.activateTokens.transactions
         ),
         state
       )
 
-    case 'lock-tokens/error':
+    case 'activate-tokens/error':
       return {
         ...state,
-        lockTokens: {
+        activateTokens: {
           amount: null,
           error: action.payload,
           loading: false,
           transactions: map(
             when(propEq('current', true), assoc('status', 'error'))
-          )(state.lockTokens.transactions),
+          )(state.activateTokens.transactions),
         },
       }
 
     /*
-     * Unlock tokens
+     * Deactivate tokens
      */
-    case 'unlock-tokens':
+    case 'deactivate-tokens':
       return {
         ...state,
-        unlockTokens: {
+        deactivateTokens: {
           amount: action.payload,
           error: null,
           loading: true,
-          transactions: [...state.lockTokens.transactions],
+          transactions: [...state.activateTokens.transactions],
         },
       }
 
-    case 'unlock-tokens/pending':
+    case 'deactivate-tokens/pending':
       return assocPath(
-        ['unlockTokens', 'transactions'],
+        ['deactivateTokens', 'transactions'],
         [
-          ...state.unlockTokens.transactions,
+          ...state.deactivateTokens.transactions,
           { hash: action.payload, current: true, status: 'pending' },
         ],
         state
       )
 
-    case 'unlock-tokens/success':
+    case 'deactivate-tokens/success':
       return {
         ...state,
-        unlockTokens: {
+        deactivateTokens: {
           amount: null,
           error: null,
           loading: false,
           transactions: map(
             when(propEq('current', true), assoc('status', 'success'))
-          )(state.unlockTokens.transactions),
+          )(state.deactivateTokens.transactions),
         },
       }
 
-    case 'unlock-tokens/error':
+    case 'deactivate-tokens/error':
       return {
         ...state,
-        unlockTokens: {
+        deactivateTokens: {
           amount: null,
           error: action.payload,
           loading: false,
           transactions: map(
             when(propEq('current', true), assoc('status', 'error'))
-          )(state.unlockTokens.transactions),
+          )(state.deactivateTokens.transactions),
         },
       }
 
-    case 'unlock-tokens/cleanup':
+    case 'deactivate-tokens/cleanup':
       return assocPath(
-        ['unlockTokens', 'transactions'],
+        ['deactivateTokens', 'transactions'],
         map(
           when(propEq('current', true), dissoc('current')),
-          state.unlockTokens.transactions
+          state.deactivateTokens.transactions
         ),
         state
       )

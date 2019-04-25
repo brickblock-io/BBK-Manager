@@ -32,32 +32,32 @@ type OwnPropsT = {||}
 
 type PropsT = {| ...InjectedPropsT, ...OwnPropsT |}
 
-export const LockBbkForm = (props: PropsT) => {
+export const ActivateBbkForm = (props: PropsT) => {
   const { classes } = props
 
   const {
     approveTokensTransactions: approveTransactions,
     approveTokensLoading,
     balances,
-    handleLockTokens: handleSubmit,
-    handleLockTokensCleanup: handleCleanup,
-    lockTokensLoading,
-    lockTokensTransactions: lockTransactions,
+    handleActivateTokens: handleSubmit,
+    handleActivateTokensCleanup: handleCleanup,
+    activateTokensLoading,
+    activateTokensTransactions: activateTransactions,
   } = useContext(BBKContext)
 
-  const loading = approveTokensLoading || lockTokensLoading
+  const loading = approveTokensLoading || activateTokensLoading
 
   const hasBalance =
-    balances.unlocked &&
-    balances.unlocked.valueAsNumber &&
-    balances.unlocked.valueAsNumber > 0
+    balances.deactivated &&
+    balances.deactivated.valueAsNumber &&
+    balances.deactivated.valueAsNumber > 0
 
   const [confirmationDialogOpen, toggleConfirmationDialog] = useState(false)
   const [error, setError] = useState(null)
 
   const _validate = validate.bind({
     hasBalance,
-    maxValue: balances.unlocked,
+    maxValue: balances.deactivated,
     setError,
   })
 
@@ -93,9 +93,9 @@ export const LockBbkForm = (props: PropsT) => {
                 title={
                   hasBalance
                     ? `How many of your ${String(
-                        balances.unlocked && balances.unlocked.value
-                      )} unlocked BBK tokens do you want to lock?`
-                    : "You don't have any unlocked BBK tokens in your current account"
+                        balances.deactivated && balances.deactivated.value
+                      )} deactivated BBK tokens do you want to activate?`
+                    : "You don't have any deactivated BBK tokens in your current account"
                 }
               >
                 <InfoOutlined color={hasBalance ? 'primary' : 'disabled'} />
@@ -107,8 +107,8 @@ export const LockBbkForm = (props: PropsT) => {
         disabled={loading || !hasBalance}
         error={!!error}
         helperText={error || amountInWords}
-        label="Lock BBK Tokens"
-        name="lock-bbk-tokens"
+        label="Activate BBK Tokens"
+        name="activate-bbk-tokens"
         onChange={handleChange}
         placeholder="e.g. 1000"
         type="number"
@@ -120,15 +120,15 @@ export const LockBbkForm = (props: PropsT) => {
         loading={loading}
         type="submit"
       >
-        Lock
+        Activate
       </Button>
       <ConfirmationDialog
+        activateTransactions={activateTransactions}
         amount={amount}
         approveTransactions={approveTransactions}
+        handleActivate={handleSubmit}
         handleCleanup={handleCleanup}
-        handleLock={handleSubmit}
         loading={loading}
-        lockTransactions={lockTransactions}
         open={confirmationDialogOpen}
         toggleConfirmationDialog={toggleConfirmationDialog}
       />
@@ -136,12 +136,12 @@ export const LockBbkForm = (props: PropsT) => {
   )
 }
 
-LockBbkForm.displayName = 'LockBbkForm'
+ActivateBbkForm.displayName = 'ActivateBbkForm'
 
 const exportedComponent: ComponentType<OwnPropsT> = withStyles(styles)(
-  LockBbkForm
+  ActivateBbkForm
 )
 
-exportedComponent.displayName = 'LockBbkFormHOC'
+exportedComponent.displayName = 'ActivateBbkFormHOC'
 
 export default exportedComponent

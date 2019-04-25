@@ -9,34 +9,34 @@ import type { ActionsT } from './actions'
 import type BN from 'bn.js'
 import type { BalanceT } from 'types'
 
-type GetUnlockedBbkBalanceT = ({
-  BrickblockToken: ?AbstractContractT,
+type GetActivatedBbkBalanceT = ({
+  AccessToken: ?AbstractContractT,
   address: ?string,
   dispatch: ActionsT => void,
   previousBalance?: ?BalanceT,
 }) => void
-export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
-  BrickblockToken,
+export const getActivatedBbkBalance: GetActivatedBbkBalanceT = ({
+  AccessToken,
   address,
   dispatch,
   previousBalance = null,
 }) => {
   // eslint-disable-next-line no-extra-semi
   ;(async () => {
-    if (!BrickblockToken || !BrickblockToken.balanceOf || address == null) {
+    if (!AccessToken || !AccessToken.lockedBbkOf || address == null) {
       dispatch({ type: 'reset-balances' })
     } else {
       try {
-        const rawBalance: BN = await BrickblockToken.balanceOf.call(address)
+        const rawBalance: BN = await AccessToken.lockedBbkOf.call(address)
 
         if (!isBN(rawBalance)) {
           dispatch({
-            type: 'set-unlocked-balance/error',
-            payload: `BrickblockToken.balanceOf(${truncateHash(
+            type: 'set-activated-balance/error',
+            payload: `AccessToken.lockedBbkOf(${truncateHash(
               address
-            )}) didn't return value of type 'BN'.\nActual value was: ${String(
+            )}) didn't return value of type 'BN'. Actual value was: ${String(
               rawBalance
-            )}.\nActual type was ${typeof rawBalance}`,
+            )}`,
           })
 
           return
@@ -46,13 +46,13 @@ export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
 
         if (!previousBalance || previousBalance.value !== newBalance.value) {
           dispatch({
-            type: 'set-unlocked-balance',
+            type: 'set-activated-balance',
             payload: newBalance,
           })
         }
       } catch (error) {
         dispatch({
-          type: 'set-unlocked-balance/error',
+          type: 'set-activated-balance/error',
           payload: error,
         })
       }
@@ -60,4 +60,4 @@ export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
   })()
 }
 
-export default getUnlockedBbkBalance
+export default getActivatedBbkBalance

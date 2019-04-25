@@ -9,13 +9,13 @@ import type { ActionsT } from './actions'
 import type { StateT } from './reducer'
 import type BN from 'bn.js'
 
-type GetUnlockedBbkBalanceT = ({
+type GetDeactivatedBbkBalanceT = ({
   BrickblockToken: ?AbstractContractT,
   address: ?string,
   dispatch: ActionsT => void,
   state: StateT,
 }) => void
-export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
+export const getDeactivatedBbkBalance: GetDeactivatedBbkBalanceT = ({
   BrickblockToken,
   address,
   dispatch,
@@ -31,7 +31,7 @@ export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
 
         if (!isBN(rawBalance)) {
           dispatch({
-            type: 'set-unlocked-balance/error',
+            type: 'set-deactivated-balance/error',
             payload: `BrickblockToken.balanceOf(${truncateHash(
               address
             )}) didn't return value of type 'BN'.\nActual value was: ${String(
@@ -45,23 +45,23 @@ export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
         const newBalance = formatWeiValue(rawBalance)
 
         // First execution of this effect, just set the initial balance directly
-        if (!state.unlocked) {
+        if (!state.deactivated) {
           dispatch({
-            type: 'set-unlocked-balance',
+            type: 'set-deactivated-balance',
             payload: newBalance,
           })
         } else {
           // If there is a pre-existing balance, only dispatch 'set-balance' if the balance actually changed
-          if (newBalance.valueAsNumber !== state.unlocked.valueAsNumber) {
+          if (newBalance.valueAsNumber !== state.deactivated.valueAsNumber) {
             dispatch({
-              type: 'set-unlocked-balance',
+              type: 'set-deactivated-balance',
               payload: newBalance,
             })
           }
         }
       } catch (error) {
         dispatch({
-          type: 'set-unlocked-balance/error',
+          type: 'set-deactivated-balance/error',
           payload: error,
         })
       }
@@ -69,4 +69,4 @@ export const getUnlockedBbkBalance: GetUnlockedBbkBalanceT = ({
   })()
 }
 
-export default getUnlockedBbkBalance
+export default getDeactivatedBbkBalance

@@ -9,13 +9,13 @@ import type { ActionsT } from './actions'
 import type { StateT } from './reducer'
 import type BN from 'bn.js'
 
-type GetLockedBbkBalanceT = ({
+type GetActivatedBbkBalanceT = ({
   AccessToken: ?AbstractContractT,
   address: ?string,
   dispatch: ActionsT => void,
   state: StateT,
 }) => void
-export const getLockedBbkBalance: GetLockedBbkBalanceT = ({
+export const getActivatedBbkBalance: GetActivatedBbkBalanceT = ({
   AccessToken,
   address,
   dispatch,
@@ -31,7 +31,7 @@ export const getLockedBbkBalance: GetLockedBbkBalanceT = ({
 
         if (!isBN(rawBalance)) {
           dispatch({
-            type: 'set-locked-balance/error',
+            type: 'set-activated-balance/error',
             payload: `AccessToken.lockedBbkOf(${truncateHash(
               address
             )}) didn't return value of type 'BN'. Actual value was: ${String(
@@ -45,23 +45,23 @@ export const getLockedBbkBalance: GetLockedBbkBalanceT = ({
         const newBalance = formatWeiValue(rawBalance)
 
         // First execution of this effect, just set the initial balance directly
-        if (!state.locked) {
+        if (!state.activated) {
           dispatch({
-            type: 'set-locked-balance',
+            type: 'set-activated-balance',
             payload: newBalance,
           })
         } else {
           // If there is a pre-existing balance, only dispatch 'set-balance' if the balance actually changed
-          if (newBalance.valueAsNumber !== state.locked.valueAsNumber) {
+          if (newBalance.valueAsNumber !== state.activated.valueAsNumber) {
             dispatch({
-              type: 'set-locked-balance',
+              type: 'set-activated-balance',
               payload: newBalance,
             })
           }
         }
       } catch (error) {
         dispatch({
-          type: 'set-locked-balance/error',
+          type: 'set-activated-balance/error',
           payload: error,
         })
       }
@@ -69,4 +69,4 @@ export const getLockedBbkBalance: GetLockedBbkBalanceT = ({
   })()
 }
 
-export default getLockedBbkBalance
+export default getActivatedBbkBalance

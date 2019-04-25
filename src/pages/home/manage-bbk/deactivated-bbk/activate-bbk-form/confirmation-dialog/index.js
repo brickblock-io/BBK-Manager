@@ -21,12 +21,12 @@ import Typography from '@material-ui/core/Typography'
 import type { TransactionsT } from 'types'
 
 type PropsT = {|
+  activateTransactions: TransactionsT,
   amount: string,
   approveTransactions: TransactionsT,
+  handleActivate: (amount: string) => void,
   handleCleanup: () => void,
-  handleLock: (amount: string) => void,
   loading: boolean,
-  lockTransactions: TransactionsT,
   open: boolean,
   toggleConfirmationDialog: boolean => void,
 |}
@@ -36,9 +36,9 @@ export const ConfirmationDialog = (props: PropsT) => {
     amount,
     approveTransactions,
     handleCleanup,
-    handleLock,
+    handleActivate,
     loading,
-    lockTransactions,
+    activateTransactions,
     open,
     toggleConfirmationDialog,
   } = props
@@ -55,27 +55,27 @@ export const ConfirmationDialog = (props: PropsT) => {
 
   const handleClose = () => toggleConfirmationDialog(false)
 
-  const handleSubmit = () => handleLock(amount)
+  const handleSubmit = () => handleActivate(amount)
 
   const currentApproveTx =
     approveTransactions && approveTransactions.find(tx => tx.current)
 
-  const currentLockTx =
-    lockTransactions && lockTransactions.find(tx => tx.current)
+  const currentActivateTx =
+    activateTransactions && activateTransactions.find(tx => tx.current)
 
   if (
-    currentLockTx &&
-    currentLockTx.status === 'success' &&
+    currentActivateTx &&
+    currentActivateTx.status === 'success' &&
     !wasSuccessSnackbarShown
   ) {
-    enqueueSnackbar(`Successfully locked ${amount} BBK tokens`, {
+    enqueueSnackbar(`Successfully activated ${amount} BBK tokens`, {
       variant: 'success',
     })
     setWasSuccessSnackbarShown(true)
 
     /*
      * Leave the dialog open a little longer so users can see the success state
-     * and specifically the second checkmark icon behind the lock transaction
+     * and specifically the second checkmark icon behind the activate transaction
      * that would otherwise only flicker, feeling like an error
      */
     setTimeout(() => {
@@ -95,14 +95,14 @@ export const ConfirmationDialog = (props: PropsT) => {
     >
       <DialogTitle disableTypography>
         <Typography variant="h2">
-          Do you want to lock {amount} BBK now?
+          Do you want to activate {amount} BBK now?
         </Typography>
       </DialogTitle>
       <DialogContent>
-        {loading || currentApproveTx || currentLockTx ? (
+        {loading || currentApproveTx || currentActivateTx ? (
           <InProgress
+            activateTx={currentActivateTx}
             approveTx={currentApproveTx}
-            lockTx={currentLockTx}
             networkName={networkName}
           />
         ) : (
@@ -117,28 +117,32 @@ export const ConfirmationDialog = (props: PropsT) => {
           disabled={
             loading ||
             (!!currentApproveTx && currentApproveTx.status === 'pending') ||
-            (!!currentLockTx && currentLockTx.status === 'pending')
+            (!!currentActivateTx && currentActivateTx.status === 'pending')
           }
           loading={loading}
           onClick={
-            currentLockTx && currentLockTx.status === 'success'
+            currentActivateTx && currentActivateTx.status === 'success'
               ? handleClose
               : handleSubmit
           }
         >
           {/* Before sending the transactions */}
-          {!currentApproveTx && !currentLockTx && `Lock ${amount} BBK`}
+          {!currentApproveTx && !currentActivateTx && `Activate ${amount} BBK`}
 
           {/* During the approval transaction  */}
-          {currentApproveTx && !currentLockTx && `Approving ${amount} BBK...`}
+          {currentApproveTx &&
+            !currentActivateTx &&
+            `Approving ${amount} BBK...`}
 
-          {/* During the locking transaction  */}
-          {currentLockTx &&
-            currentLockTx.status === 'pending' &&
-            `Locking ${amount} BBK...`}
+          {/* During the activating transaction  */}
+          {currentActivateTx &&
+            currentActivateTx.status === 'pending' &&
+            `Activateing ${amount} BBK...`}
 
-          {/* After locking transaction succeeded */}
-          {currentLockTx && currentLockTx.status === 'success' && 'Close'}
+          {/* After activating transaction succeeded */}
+          {currentActivateTx &&
+            currentActivateTx.status === 'success' &&
+            'Close'}
         </Button>
       </DialogActions>
     </Dialog>

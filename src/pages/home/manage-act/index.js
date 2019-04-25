@@ -75,13 +75,17 @@ export const ManageAct = (props: PropsT) => {
 
   if (sellActForEth.error) {
     enqueueSnackbar(sellActForEth.error, { variant: 'error' })
-    reportError(
-      new Error(
-        `Couldn't sell ACT for '${truncateHash(currentAccount)}': ${String(
-          sellActForEth.error
-        )}`
+
+    // We don't need to log when users reject the transaction
+    if (!String(sellActForEth.error).includes('signature was denied')) {
+      reportError(
+        new Error(
+          `Couldn't sell ACT for '${truncateHash(currentAccount)}': ${String(
+            sellActForEth.error
+          )}`
+        )
       )
-    )
+    }
   }
 
   return (

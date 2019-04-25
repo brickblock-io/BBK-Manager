@@ -16,8 +16,8 @@ import type { ComponentType } from 'react'
 import type { TransactionT } from 'types'
 
 type OwnPropsT = {|
+  activateTx: ?TransactionT,
   approveTx: ?TransactionT,
-  lockTx: ?TransactionT,
   networkName: ?string,
 |}
 
@@ -28,7 +28,7 @@ type InjectedPropsT = {|
 type PropsT = {| ...InjectedPropsT, ...OwnPropsT |}
 
 export const InProgress = (props: PropsT) => {
-  const { classes, approveTx, lockTx, networkName } = props
+  const { classes, approveTx, activateTx, networkName } = props
 
   if (!networkName) {
     throw new Error('InProgress :: networkName prop was undefined')
@@ -59,31 +59,31 @@ export const InProgress = (props: PropsT) => {
         )}
       </li>
       <li>
-        Lock Transaction:{' '}
-        {lockTx && (
+        Activate Transaction:{' '}
+        {activateTx && (
           <a
-            href={etherscanTxLink(lockTx.hash, networkName)}
+            href={etherscanTxLink(activateTx.hash, networkName)}
             rel="noopener noreferrer"
             target="_blank"
             title="View transaction on EtherScan"
           >
-            {truncateHash(lockTx.hash)}
+            {truncateHash(activateTx.hash)}
           </a>
         )}
         {/*
-         * When the approval transaction has succeeded, but the lock transaction
+         * When the approval transaction has succeeded, but the activate transaction
          * hasn't been signed in MetaMask yet, we still want to show a spinner
-         * behind the lock transaction to indicate that something is about to happen
+         * behind the activate transaction to indicate that something is about to happen
          * here
          */
-        ((!lockTx && approveTx && approveTx.status === 'success') ||
-          (lockTx && lockTx.status === 'pending')) && (
+        ((!activateTx && approveTx && approveTx.status === 'success') ||
+          (activateTx && activateTx.status === 'pending')) && (
           <CircularProgress className={classes.spinner} size={15} />
         )}
-        {lockTx && lockTx.status === 'success' && (
+        {activateTx && activateTx.status === 'success' && (
           <CheckIcon className={classes.checkIcon} />
         )}
-        {lockTx && lockTx.status === 'error' && (
+        {activateTx && activateTx.status === 'error' && (
           <ErrorIcon className={classes.errorIcon} />
         )}
       </li>

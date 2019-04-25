@@ -12,7 +12,7 @@ import config from 'app.config.js'
 // Types
 import type { TransactionReceiptT } from 'types'
 
-type LockBbkT = ({
+type ActivateBbkT = ({
   AccessToken: ?AbstractContractT,
   BrickblockToken: ?AbstractContractT,
   address: ?string,
@@ -20,47 +20,47 @@ type LockBbkT = ({
   dispatch: ActionsT => void,
 }) => void
 
-export const lockBbk: LockBbkT = ({
+export const activateBbk: ActivateBbkT = ({
   AccessToken,
   BrickblockToken,
   amount,
   address,
   dispatch,
 }) => {
-  const _lockBbk = async () => {
+  const _activateBbk = async () => {
     if (AccessToken && BrickblockToken && amount) {
       const amountInWei = toBN(amount).mul(toBN(1e18))
 
       /*
-       * Get current unlocked BBK balance and check that it's sufficient
+       * Get current deactivated BBK balance and check that it's sufficient
        */
-      let unlockedBbkBalance
+      let deactivatedBbkBalance
 
       try {
-        unlockedBbkBalance = await BrickblockToken.balanceOf.call(address)
+        deactivatedBbkBalance = await BrickblockToken.balanceOf.call(address)
 
-        if (!unlockedBbkBalance || !isBN(unlockedBbkBalance)) {
+        if (!deactivatedBbkBalance || !isBN(deactivatedBbkBalance)) {
           throw new Error('UNKNOWN_BALANCE')
         }
 
-        if (amountInWei.gt(unlockedBbkBalance)) {
+        if (amountInWei.gt(deactivatedBbkBalance)) {
           throw new Error('INSUFFICIENT_BBK_BALANCE')
         }
       } catch (error) {
         if (error.message === 'INSUFFICIENT_BBK_BALANCE') {
           dispatch({
-            type: 'lock-tokens/error',
-            payload: `Insufficient BBK balance. The maximum amount you can lock is ${
-              // $FlowIgnore because we're checking that unlockedBbkBalance is not undefined above
-              formatWeiValue(unlockedBbkBalance).value
+            type: 'activate-tokens/error',
+            payload: `Insufficient BBK balance. The maximum amount you can activate is ${
+              // $FlowIgnore because we're checking that deactivatedBbkBalance is not undefined above
+              formatWeiValue(deactivatedBbkBalance).value
             } BBK, because that's all that is available in this account.`,
           })
         }
 
         if (error.message === 'UNKNOWN_BALANCE') {
           dispatch({
-            type: 'lock-tokens/error',
-            payload: "Couldn't determine current unlocked BBK balance",
+            type: 'activate-tokens/error',
+            payload: "Couldn't determine current deactivated BBK balance",
           })
         }
 
@@ -68,7 +68,7 @@ export const lockBbk: LockBbkT = ({
       }
 
       /*
-       * Approve AccessToken contract to lock BBK on behalf of the user
+       * Approve AccessToken contract to activate BBK on behalf of the user
        */
       try {
         await BrickblockToken.approve
@@ -89,14 +89,14 @@ export const lockBbk: LockBbkT = ({
           )
         ) {
           dispatch({
-            type: 'lock-tokens/error',
+            type: 'activate-tokens/error',
             payload: 'Transaction signature was denied in MetaMask',
           })
         } else {
           dispatch({
-            type: 'lock-tokens/error',
+            type: 'activate-tokens/error',
             payload:
-              "Couldn't approve AccessToken contract to lock BBK on your behalf. An unexpected error occurred 😕",
+              "Couldn't approve AccessToken contract to activate BBK on your behalf. An unexpected error occurred 😕",
           })
         }
 
@@ -104,7 +104,7 @@ export const lockBbk: LockBbkT = ({
       }
 
       /*
-       * Finally, lock the entered amount of BBK tokens
+       * Finally, activate the entered amount of BBK tokens
        */
       try {
         await AccessToken.lockBBK
@@ -113,10 +113,10 @@ export const lockBbk: LockBbkT = ({
             gas: config.DEFAULT_GAS,
           })
           .on('transactionHash', (hash: string) => {
-            dispatch({ type: 'lock-tokens/pending', payload: hash })
+            dispatch({ type: 'activate-tokens/pending', payload: hash })
           })
           .on('receipt', (receipt: TransactionReceiptT) => {
-            dispatch({ type: 'lock-tokens/success', payload: receipt })
+            dispatch({ type: 'activate-tokens/success', payload: receipt })
           })
       } catch (error) {
         if (
@@ -125,14 +125,14 @@ export const lockBbk: LockBbkT = ({
           )
         ) {
           dispatch({
-            type: 'lock-tokens/error',
+            type: 'activate-tokens/error',
             payload: 'Transaction signature was denied in MetaMask',
           })
         } else {
           dispatch({
-            type: 'lock-tokens/error',
+            type: 'activate-tokens/error',
             payload:
-              "Couldn't lock BBK tokens. An unexpected error occurred 😕",
+              "Couldn't activate BBK tokens. An unexpected error occurred 😕",
           })
         }
 
@@ -141,7 +141,7 @@ export const lockBbk: LockBbkT = ({
     }
   }
 
-  _lockBbk()
+  _activateBbk()
 }
 
-export default lockBbk
+export default activateBbk

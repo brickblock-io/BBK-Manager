@@ -8,7 +8,7 @@ import { BBKContext } from 'pages/home/manage-bbk'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import LockBbkForm from './lock-bbk-form'
+import ActivateBbkForm from './activate-bbk-form'
 import Typography from '@material-ui/core/Typography'
 
 // Types
@@ -16,7 +16,7 @@ type PropsT = {|
   classes: { [string]: string },
 |}
 
-export const UnlockedBbk = (props: PropsT) => {
+export const DeactivatedBbk = (props: PropsT) => {
   const { classes } = props
 
   const { balances } = useContext(BBKContext)
@@ -25,18 +25,18 @@ export const UnlockedBbk = (props: PropsT) => {
     <Card className={classes.card}>
       <CardContent>
         <Typography gutterBottom variant="h2">
-          Lock BBK
+          Activate BBK
         </Typography>
 
-        {balances.unlocked ? (
+        {balances.deactivated ? (
           <div className={classes.tokenSection}>
             <div className={classes.balance}>
-              <b>{balances.unlocked.value} unlocked BBK Tokens</b>
+              <b>{balances.deactivated.value} inactive BBK Tokens</b>
               <Typography className={classes.balanceInWords} variant="caption">
-                ({balances.unlocked.valueInWords})
+                ({balances.deactivated.valueInWords})
               </Typography>
             </div>
-            <LockBbkForm />
+            <ActivateBbkForm />
           </div>
         ) : (
           <div className={classes.loading}>
@@ -48,6 +48,6 @@ export const UnlockedBbk = (props: PropsT) => {
   )
 }
 
-UnlockedBbk.displayName = 'LockedBbk'
+DeactivatedBbk.displayName = 'ActivatedBbk'
 
-export default UnlockedBbk
+export default DeactivatedBbk

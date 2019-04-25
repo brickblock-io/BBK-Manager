@@ -1,32 +1,32 @@
 // @flow
 import type { TransactionReceiptT } from 'types'
 
-type SetUnlockedBalanceT = {|
+type SetDeactivatedBalanceT = {|
   payload: {|
     value: string,
     valueAsNumber: number,
     valueInWords: string,
   |},
-  type: 'set-unlocked-balance',
+  type: 'set-deactivated-balance',
 |}
 
-type SetUnlockedBalanceErrorT = {|
+type SetDeactivatedBalanceErrorT = {|
   payload: string,
-  type: 'set-unlocked-balance/error',
+  type: 'set-deactivated-balance/error',
 |}
 
-type SetLockedBalanceT = {|
+type SetActivatedBalanceT = {|
   payload: {|
     value: string,
     valueAsNumber: number,
     valueInWords: string,
   |},
-  type: 'set-locked-balance',
+  type: 'set-activated-balance',
 |}
 
-type SetLockedBalanceErrorT = {|
+type SetActivatedBalanceErrorT = {|
   payload: string,
-  type: 'set-locked-balance/error',
+  type: 'set-activated-balance/error',
 |}
 
 type ApproveTokensT = {|
@@ -53,52 +53,52 @@ type ApproveTokensCleanupT = {|
   type: 'approve-tokens/cleanup',
 |}
 
-type LockTokensT = {|
+type ActivateTokensT = {|
   payload: string,
-  type: 'lock-tokens',
+  type: 'activate-tokens',
 |}
 
-type LockTokensPendingT = {|
+type ActivateTokensPendingT = {|
   payload: string,
-  type: 'lock-tokens/pending',
+  type: 'activate-tokens/pending',
 |}
 
-type LockTokensSuccessT = {|
+type ActivateTokensSuccessT = {|
   payload: TransactionReceiptT,
-  type: 'lock-tokens/success',
+  type: 'activate-tokens/success',
 |}
 
-type LockTokensCleanupT = {|
-  type: 'lock-tokens/cleanup',
+type ActivateTokensCleanupT = {|
+  type: 'activate-tokens/cleanup',
 |}
 
-type LockTokensErrorT = {|
+type ActivateTokensErrorT = {|
   payload: string,
-  type: 'lock-tokens/error',
+  type: 'activate-tokens/error',
 |}
 
-type UnlockTokensT = {|
+type DeactivateTokensT = {|
   payload: string,
-  type: 'unlock-tokens',
+  type: 'deactivate-tokens',
 |}
 
-type UnlockTokensPendingT = {|
+type DeactivateTokensPendingT = {|
   payload: string,
-  type: 'unlock-tokens/pending',
+  type: 'deactivate-tokens/pending',
 |}
 
-type UnlockTokensSuccessT = {|
+type DeactivateTokensSuccessT = {|
   payload: TransactionReceiptT,
-  type: 'unlock-tokens/success',
+  type: 'deactivate-tokens/success',
 |}
 
-type UnlockTokensErrorT = {|
+type DeactivateTokensErrorT = {|
   payload: string,
-  type: 'unlock-tokens/error',
+  type: 'deactivate-tokens/error',
 |}
 
-type UnlockTokensCleanupT = {|
-  type: 'unlock-tokens/cleanup',
+type DeactivateTokensCleanupT = {|
+  type: 'deactivate-tokens/cleanup',
 |}
 
 type ResetBalancesT = {|
@@ -106,23 +106,23 @@ type ResetBalancesT = {|
 |}
 
 export type ActionsT =
-  | SetUnlockedBalanceT
-  | SetUnlockedBalanceErrorT
-  | SetLockedBalanceT
-  | SetLockedBalanceErrorT
+  | SetDeactivatedBalanceT
+  | SetDeactivatedBalanceErrorT
+  | SetActivatedBalanceT
+  | SetActivatedBalanceErrorT
   | ApproveTokensT
   | ApproveTokensPendingT
   | ApproveTokensSuccessT
   | ApproveTokensErrorT
   | ApproveTokensCleanupT
-  | LockTokensT
-  | LockTokensPendingT
-  | LockTokensSuccessT
-  | LockTokensCleanupT
-  | LockTokensErrorT
-  | UnlockTokensT
-  | UnlockTokensPendingT
-  | UnlockTokensSuccessT
-  | UnlockTokensErrorT
-  | UnlockTokensCleanupT
+  | ActivateTokensT
+  | ActivateTokensPendingT
+  | ActivateTokensSuccessT
+  | ActivateTokensCleanupT
+  | ActivateTokensErrorT
+  | DeactivateTokensT
+  | DeactivateTokensPendingT
+  | DeactivateTokensSuccessT
+  | DeactivateTokensErrorT
+  | DeactivateTokensCleanupT
   | ResetBalancesT

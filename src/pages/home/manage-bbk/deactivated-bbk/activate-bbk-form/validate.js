@@ -9,7 +9,9 @@ export function validate(value: string): boolean {
   |} = this
 
   if (!ctx.hasBalance) {
-    ctx.setError("You don't have any locked BBK tokens in your current account")
+    ctx.setError(
+      "You don't have any deactivated BBK tokens in your current account"
+    )
 
     return false
   }
@@ -24,9 +26,9 @@ export function validate(value: string): boolean {
 
   if (parseInt(value) > ctx.maxValue.valueAsNumber) {
     ctx.setError(
-      `You can't unlock more than the ${
+      `You can't activate more than the ${
         ctx.maxValue.value
-      } locked BBK available in your current account`
+      } deactivated BBK available in your current account`
     )
 
     return false

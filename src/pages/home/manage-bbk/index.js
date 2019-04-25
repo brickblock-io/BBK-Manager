@@ -10,8 +10,8 @@ import { truncateHash } from '@brickblock/web3-utils'
 import reportError from 'utils/report-error'
 
 // Components
-import LockedBbk from './locked-bbk'
-import UnlockedBbk from './unlocked-bbk'
+import ActivatedBbk from './activated-bbk'
+import DeactivatedBbk from './deactivated-bbk'
 import BbkTransactions from './bbk-transactions'
 
 // Styles
@@ -41,22 +41,22 @@ export const BBKContext = React.createContext<BBKContextT>({
   AccessToken: null,
   BrickblockToken: null,
   balances: {
-    locked: null,
-    unlocked: null,
+    activated: null,
+    deactivated: null,
   },
-  handleLockTokens: () => {},
-  handleLockTokensCleanup: () => {},
-  handleUnlockTokens: () => {},
-  handleUnlockTokensCleanup: () => {},
+  handleActivateTokens: () => {},
+  handleActivateTokensCleanup: () => {},
+  handleDeactivateTokens: () => {},
+  handleDeactivateTokensCleanup: () => {},
   approveTokensError: null,
   approveTokensLoading: false,
   approveTokensTransactions: [],
-  lockTokensError: null,
-  lockTokensLoading: false,
-  lockTokensTransactions: [],
-  unlockTokensError: null,
-  unlockTokensLoading: false,
-  unlockTokensTransactions: [],
+  activateTokensError: null,
+  activateTokensLoading: false,
+  activateTokensTransactions: [],
+  deactivateTokensError: null,
+  deactivateTokensLoading: false,
+  deactivateTokensTransactions: [],
 })
 
 export const ManageBbk = (props: PropsT) => {
@@ -81,8 +81,8 @@ export const ManageBbk = (props: PropsT) => {
     BrickblockToken,
     approveTokensError,
     balances,
-    lockTokensError,
-    unlockTokensError,
+    activateTokensError,
+    deactivateTokensError,
   } = bbkContext
 
   if (
@@ -96,62 +96,74 @@ export const ManageBbk = (props: PropsT) => {
 
   if (approveTokensError) {
     enqueueSnackbar(approveTokensError, { variant: 'error' })
-    reportError(
-      new Error(
-        `Couldn't approve AccessToken contract to lock BBK tokens for '${truncateHash(
-          currentAccount
-        )}': ${approveTokensError}`
+
+    // We don't need to log when users reject the transaction
+    if (!approveTokensError.includes('signature was denied')) {
+      reportError(
+        new Error(
+          `Couldn't approve AccessToken contract to activate BBK tokens for '${truncateHash(
+            currentAccount
+          )}': ${approveTokensError}`
+        )
       )
-    )
+    }
   }
 
-  if (lockTokensError) {
-    enqueueSnackbar(lockTokensError, { variant: 'error' })
-    reportError(
-      new Error(
-        `Couldn't lock BBK tokens for '${truncateHash(
-          currentAccount
-        )}': ${lockTokensError}`
+  if (activateTokensError) {
+    enqueueSnackbar(activateTokensError, { variant: 'error' })
+
+    // We don't need to log when users reject the transaction
+    if (!activateTokensError.includes('signature was denied')) {
+      reportError(
+        new Error(
+          `Couldn't activate BBK tokens for '${truncateHash(
+            currentAccount
+          )}': ${activateTokensError}`
+        )
       )
-    )
+    }
   }
 
-  if (unlockTokensError) {
-    enqueueSnackbar(unlockTokensError, { variant: 'error' })
-    reportError(
-      new Error(
-        `Couldn't unlock BBK tokens for '${truncateHash(
-          currentAccount
-        )}': ${unlockTokensError}`
+  if (deactivateTokensError) {
+    enqueueSnackbar(deactivateTokensError, { variant: 'error' })
+
+    // We don't need to log when users reject the transaction
+    if (!deactivateTokensError.includes('signature was denied')) {
+      reportError(
+        new Error(
+          `Couldn't deactivate BBK tokens for '${truncateHash(
+            currentAccount
+          )}': ${deactivateTokensError}`
+        )
       )
-    )
+    }
   }
 
-  if (balances && balances.locked && balances.locked.error) {
-    enqueueSnackbar(balances.locked.error, { variant: 'error' })
+  if (balances && balances.activated && balances.activated.error) {
+    enqueueSnackbar(balances.activated.error, { variant: 'error' })
     reportError(
       new Error(
-        `Couldn't fetch locked BBK balance for '${truncateHash(
+        `Couldn't fetch activated BBK balance for '${truncateHash(
           currentAccount
         )}': ${String(
-          // $FlowIgnore because we're checking for existence of balances.locked.error in the above if-statement
-          balances.locked.error
+          // $FlowIgnore because we're checking for existence of balances.activated.error in the above if-statement
+          balances.activated.error
         )}`
       )
     )
   }
 
-  if (balances && balances.unlocked && balances.unlocked.error) {
-    enqueueSnackbar(balances.unlocked.error, {
+  if (balances && balances.deactivated && balances.deactivated.error) {
+    enqueueSnackbar(balances.deactivated.error, {
       variant: 'error',
     })
     reportError(
       new Error(
-        `Couldn't fetch unlocked BBK balance for '${truncateHash(
+        `Couldn't fetch deactivated BBK balance for '${truncateHash(
           currentAccount
         )}': ${String(
-          // $FlowIgnore because we're checking for existence of balances.locked.error in the above if-statement
-          balances.unlocked.error
+          // $FlowIgnore because we're checking for existence of balances.activated.error in the above if-statement
+          balances.deactivated.error
         )}`
       )
     )
@@ -160,8 +172,8 @@ export const ManageBbk = (props: PropsT) => {
   return (
     <Fragment>
       <BBKContext.Provider value={bbkContext}>
-        <UnlockedBbk classes={classes} />
-        <LockedBbk classes={classes} />
+        <DeactivatedBbk classes={classes} />
+        <ActivatedBbk classes={classes} />
         <BbkTransactions
           AccessToken={AccessToken}
           BrickblockToken={BrickblockToken}

@@ -32,28 +32,28 @@ type OwnPropsT = {||}
 
 type PropsT = {| ...InjectedPropsT, ...OwnPropsT |}
 
-export const UnlockBbkForm = (props: PropsT) => {
+export const DeactivateBbkForm = (props: PropsT) => {
   const { classes } = props
 
   const {
     balances,
-    handleUnlockTokens: handleSubmit,
-    handleUnlockTokensCleanup: handleCleanup,
-    unlockTokensLoading: loading,
-    unlockTokensTransactions: transactions,
+    handleDeactivateTokens: handleSubmit,
+    handleDeactivateTokensCleanup: handleCleanup,
+    deactivateTokensLoading: loading,
+    deactivateTokensTransactions: transactions,
   } = useContext(BBKContext)
 
   const hasBalance =
-    balances.locked &&
-    balances.locked.valueAsNumber &&
-    balances.locked.valueAsNumber > 0
+    balances.activated &&
+    balances.activated.valueAsNumber &&
+    balances.activated.valueAsNumber > 0
 
   const [confirmationDialogOpen, toggleConfirmationDialog] = useState(false)
   const [error, setError] = useState(null)
 
   const _validate = validate.bind({
     hasBalance,
-    maxValue: balances.locked,
+    maxValue: balances.activated,
     setError,
   })
 
@@ -89,9 +89,9 @@ export const UnlockBbkForm = (props: PropsT) => {
                 title={
                   hasBalance
                     ? `How many of your ${String(
-                        balances.locked && balances.locked.value
-                      )} locked BBK tokens do you want to unlock?`
-                    : "You don't have any locked BBK tokens in your current account"
+                        balances.activated && balances.activated.value
+                      )} activated BBK tokens do you want to deactivate?`
+                    : "You don't have any activated BBK tokens in your current account"
                 }
               >
                 <InfoOutlined color={hasBalance ? 'primary' : 'disabled'} />
@@ -103,8 +103,8 @@ export const UnlockBbkForm = (props: PropsT) => {
         disabled={loading || !hasBalance}
         error={!!error}
         helperText={error || amountInWords}
-        label="Unlock BBK Tokens"
-        name="unlock-bbk-tokens"
+        label="Deactivate BBK Tokens"
+        name="deactivate-bbk-tokens"
         onChange={handleChange}
         placeholder="e.g. 1000"
         type="number"
@@ -116,39 +116,39 @@ export const UnlockBbkForm = (props: PropsT) => {
         loading={loading}
         type="submit"
       >
-        Unlock
+        Deactivate
       </Button>
       <ConfirmationDialog
         amount={amount}
-        buttonText={`Unlock ${amount} BBK`}
-        buttonTextInProgress={`Unlocking ${amount} BBK...`}
+        buttonText={`Deactivate ${amount} BBK`}
+        buttonTextInProgress={`Deactivating ${amount} BBK...`}
         handleCleanup={handleCleanup}
         handleSubmit={handleSubmit}
         loading={loading}
         open={confirmationDialogOpen}
-        successMessage={`Successfully unlocked ${amount} BBK tokens`}
-        title={`Do you want to unlock ${amount} BBK now?`}
+        successMessage={`Successfully deactivated ${amount} BBK tokens`}
+        title={`Do you want to deactivate ${amount} BBK now?`}
         toggleDialog={toggleConfirmationDialog}
         transactions={transactions}
       >
-        Clicking the &quot;Unlock BBK&quot; button will ask you to sign a
-        MetaMask transactions that will unlock {amount} BBK tokens from the
+        Clicking the &quot;Deactivate&quot; button will ask you to sign a
+        MetaMask transactions that will deactivate {amount} BBK tokens from the
         AccessToken contract back into your current account.
         <br />
         <br />
-        Unlocked BBK tokens can be freely transferred, but will no longer
+        Deactivated BBK tokens can be freely transferred, but will no longer
         generate ACT tokens.
       </ConfirmationDialog>
     </form>
   )
 }
 
-UnlockBbkForm.displayName = 'UnlockBbkForm'
+DeactivateBbkForm.displayName = 'DeactivateBbkForm'
 
 const exportedComponent: ComponentType<OwnPropsT> = withStyles(styles)(
-  UnlockBbkForm
+  DeactivateBbkForm
 )
 
-exportedComponent.displayName = 'UnlockBbkFormHOC'
+exportedComponent.displayName = 'DeactivateBbkFormHOC'
 
 export default exportedComponent

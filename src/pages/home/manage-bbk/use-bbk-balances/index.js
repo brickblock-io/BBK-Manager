@@ -8,10 +8,10 @@ import { useContract, useInterval } from '@brickblock/web3-utils'
 import reducer, { initialState } from './reducer'
 
 // Utils
-import getLockedBbkBalance from './get-locked-bbk-balance'
-import getUnlockedBbkBalance from './get-unlocked-bbk-balance'
-import lockBbk from './lock-bbk'
-import unlockBbk from './unlock-bbk'
+import getActivatedBbkBalance from './get-activated-bbk-balance'
+import getDeactivatedBbkBalance from './get-deactivated-bbk-balance'
+import activateBbk from './activate-bbk'
+import deactivateBbk from './deactivate-bbk'
 
 // Types
 import type { AbstractContractT } from 'truffle-contract'
@@ -22,23 +22,23 @@ import type { BalanceT, TransactionsT, CurrentProviderT } from 'types'
 export type BBKContextT = {|
   AccessToken: ?AbstractContractT,
   BrickblockToken: ?AbstractContractT,
+  activateTokensError: ?string,
+  activateTokensLoading: boolean,
+  activateTokensTransactions: TransactionsT,
   approveTokensError: ?string,
   approveTokensLoading: boolean,
   approveTokensTransactions: TransactionsT,
   balances: {
-    locked: ?BalanceT,
-    unlocked: ?BalanceT,
+    activated: ?BalanceT,
+    deactivated: ?BalanceT,
   },
-  handleLockTokens: (amount: string) => void,
-  handleLockTokensCleanup: () => void,
-  handleUnlockTokens: (amount: string) => void,
-  handleUnlockTokensCleanup: () => void,
-  lockTokensError: ?string,
-  lockTokensLoading: boolean,
-  lockTokensTransactions: TransactionsT,
-  unlockTokensError: ?string,
-  unlockTokensLoading: boolean,
-  unlockTokensTransactions: TransactionsT,
+  deactivateTokensError: ?string,
+  deactivateTokensLoading: boolean,
+  deactivateTokensTransactions: TransactionsT,
+  handleActivateTokens: (amount: string) => void,
+  handleActivateTokensCleanup: () => void,
+  handleDeactivateTokens: (amount: string) => void,
+  handleDeactivateTokensCleanup: () => void,
 |}
 
 type UseBbkBalanceOfT = ({
@@ -68,29 +68,29 @@ export const useBbkBalanceOf: UseBbkBalanceOfT = ({
   /*
    * Handlers
    */
-  const handleLockTokens = amount => {
-    dispatch({ type: 'lock-tokens', payload: amount })
+  const handleActivateTokens = amount => {
+    dispatch({ type: 'activate-tokens', payload: amount })
   }
 
-  const handleLockTokensCleanup = () => {
+  const handleActivateTokensCleanup = () => {
     dispatch({ type: 'approve-tokens/cleanup' })
-    dispatch({ type: 'lock-tokens/cleanup' })
+    dispatch({ type: 'activate-tokens/cleanup' })
   }
 
-  const handleUnlockTokens = amount => {
-    dispatch({ type: 'unlock-tokens', payload: amount })
+  const handleDeactivateTokens = amount => {
+    dispatch({ type: 'deactivate-tokens', payload: amount })
   }
 
-  const handleUnlockTokensCleanup = () => {
-    dispatch({ type: 'unlock-tokens/cleanup' })
+  const handleDeactivateTokensCleanup = () => {
+    dispatch({ type: 'deactivate-tokens/cleanup' })
   }
 
   /*
    * Effects
    */
   useEffect(
-    function _getUnlockedBbkBalance() {
-      getUnlockedBbkBalance({
+    function _getDeactivatedBbkBalance() {
+      getDeactivatedBbkBalance({
         BrickblockToken,
         address,
         dispatch,
@@ -100,8 +100,8 @@ export const useBbkBalanceOf: UseBbkBalanceOfT = ({
   )
 
   useEffect(
-    function _getLockedBbkBalance() {
-      getLockedBbkBalance({
+    function _getActivatedBbkBalance() {
+      getActivatedBbkBalance({
         AccessToken,
         address,
         dispatch,
@@ -111,64 +111,68 @@ export const useBbkBalanceOf: UseBbkBalanceOfT = ({
   )
 
   useInterval(() => {
-    getLockedBbkBalance({
+    getActivatedBbkBalance({
       AccessToken,
       address,
       dispatch,
-      previousBalance: state.locked,
+      previousBalance: state.activated,
     })
-    getUnlockedBbkBalance({
+    getDeactivatedBbkBalance({
       BrickblockToken,
       address,
       dispatch,
-      previousBalance: state.unlocked,
+      previousBalance: state.deactivated,
     })
   }, 3000)
 
   useEffect(
-    function _lockBbk() {
-      lockBbk({
+    function _activateBbk() {
+      activateBbk({
         AccessToken,
         BrickblockToken,
         address,
-        amount: state.lockTokens.amount,
+        amount: state.activateTokens.amount,
         dispatch,
       })
     },
-    [AccessToken, BrickblockToken, address, state.lockTokens.amount]
+    [AccessToken, BrickblockToken, address, state.activateTokens.amount]
   )
 
   useEffect(
-    function _unlockBbk() {
-      unlockBbk({
+    function _deactivateBbk() {
+      deactivateBbk({
         AccessToken,
         address,
-        amount: state.unlockTokens.amount,
+        amount: state.deactivateTokens.amount,
         dispatch,
       })
     },
-    [AccessToken, address, state.unlockTokens.amount]
+    [AccessToken, address, state.deactivateTokens.amount]
   )
 
   return {
     AccessToken,
     BrickblockToken,
-    balances: { locked: state.locked, unlocked: state.unlocked },
-    handleLockTokens,
-    handleLockTokensCleanup,
-    handleUnlockTokens,
-    handleUnlockTokensCleanup,
+    balances: { activated: state.activated, deactivated: state.deactivated },
+    handleActivateTokens,
+    handleActivateTokensCleanup,
+    handleDeactivateTokens,
+    handleDeactivateTokensCleanup,
     approveTokensError: state.approveTokens ? state.approveTokens.error : '',
     approveTokensLoading: state.approveTokens && state.approveTokens.loading,
     approveTokensTransactions:
       state.approveTokens && state.approveTokens.transactions,
-    lockTokensError: state.lockTokens ? state.lockTokens.error : '',
-    lockTokensLoading: state.lockTokens && state.lockTokens.loading,
-    lockTokensTransactions: state.lockTokens && state.lockTokens.transactions,
-    unlockTokensError: state.unlockTokens ? state.unlockTokens.error : '',
-    unlockTokensLoading: state.unlockTokens && state.unlockTokens.loading,
-    unlockTokensTransactions:
-      state.unlockTokens && state.unlockTokens.transactions,
+    activateTokensError: state.activateTokens ? state.activateTokens.error : '',
+    activateTokensLoading: state.activateTokens && state.activateTokens.loading,
+    activateTokensTransactions:
+      state.activateTokens && state.activateTokens.transactions,
+    deactivateTokensError: state.deactivateTokens
+      ? state.deactivateTokens.error
+      : '',
+    deactivateTokensLoading:
+      state.deactivateTokens && state.deactivateTokens.loading,
+    deactivateTokensTransactions:
+      state.deactivateTokens && state.deactivateTokens.transactions,
   }
 }
 

@@ -11,15 +11,15 @@ export const Explanation = (props: PropsT) => {
 
   return (
     <>
-      Clicking the &quot;Lock BBK&quot; button will ask you to sign <b>two</b>{' '}
-      MetaMask transactions:
+      Clicking the &quot;Activate BBK&quot; button will ask you to sign{' '}
+      <b>two</b> MetaMask transactions:
       <ol>
         <li>
-          Approving our AccessToken contract to lock {amount} BBK tokens on your
-          behalf
+          Approving our AccessToken contract to activate {amount} BBK tokens on
+          your behalf
         </li>
         <li>
-          Actually locking {amount} BBK tokens into the AccessToken contract
+          Actually activating {amount} BBK tokens into the AccessToken contract
         </li>
       </ol>
       This 2-step process is necessary for our BrickblockToken and AccessToken
