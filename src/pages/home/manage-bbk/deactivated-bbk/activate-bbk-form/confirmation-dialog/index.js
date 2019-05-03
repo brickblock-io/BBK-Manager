@@ -137,7 +137,7 @@ export const ConfirmationDialog = (props: PropsT) => {
           {/* During the activating transaction  */}
           {currentActivateTx &&
             currentActivateTx.status === 'pending' &&
-            `Activateing ${amount} BBK...`}
+            `Activating ${amount} BBK...`}
 
           {/* After activating transaction succeeded */}
           {currentActivateTx &&
