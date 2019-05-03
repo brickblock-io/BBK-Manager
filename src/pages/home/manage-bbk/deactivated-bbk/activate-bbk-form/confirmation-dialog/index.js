@@ -139,6 +139,11 @@ export const ConfirmationDialog = (props: PropsT) => {
             currentActivateTx.status === 'pending' &&
             `Activating ${amount} BBK...`}
 
+          {/* If approval or activating transaction failed */}
+          {((currentApproveTx && currentApproveTx.status === 'error') ||
+            (currentActivateTx && currentActivateTx.status === 'error')) &&
+            'Retry'}
+
           {/* After activating transaction succeeded */}
           {currentActivateTx &&
             currentActivateTx.status === 'success' &&
