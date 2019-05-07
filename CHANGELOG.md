@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://git.brickblock.sh///compare/v1.2.0...v1.2.1) (2019-05-07)
+
+
+### Bug Fixes
+
+* downgrade snackbar dependency to latest functioning version (latest version broke the dismiss button) ([8f78374](https://git.brickblock.sh///commit/8f78374))
+* **activate-bbk:** fix eternal spinner after denying metamask signature ([b34cedd](https://git.brickblock.sh///commit/b34cedd))
+
+
+### Chore
+
+* **cleanup:** removed unused ‘use-act-balance-of’ folder ([6041707](https://git.brickblock.sh///commit/6041707))
+
+
+
 ## [1.2.0](https://git.brickblock.sh///compare/v1.1.1...v1.2.0) (2019-05-07)
 
 
