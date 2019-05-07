@@ -56,6 +56,8 @@ export const InProgress = (props: PropsT) => {
             {
               "This can take between 15 seconds and a few minutes, please don't close this window."
             }
+            <br />
+            <br />
           </>
         )}
         {approveTx && approveTx.status === 'success' && (
@@ -85,7 +87,15 @@ export const InProgress = (props: PropsT) => {
          */
         ((!activateTx && approveTx && approveTx.status === 'success') ||
           (activateTx && activateTx.status === 'pending')) && (
-          <CircularProgress className={classes.spinner} size={15} />
+          <>
+            <CircularProgress className={classes.spinner} size={15} />
+            <br />
+            <br />
+            {
+              "This can take between 15 seconds and a few minutes, please don't close this window."
+            }
+            <br />
+          </>
         )}
         {activateTx && activateTx.status === 'success' && (
           <CheckIcon className={classes.checkIcon} />
