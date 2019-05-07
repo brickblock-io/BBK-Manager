@@ -5,9 +5,9 @@ import React, { Fragment } from 'react'
 import useBbk from './use-bbk'
 
 // Utils
+import * as Sentry from '@sentry/browser'
 import { useSnackbar } from 'notistack'
 import { truncateHash } from '@brickblock/web3-utils'
-import reportError from 'utils/report-error'
 
 // Components
 import ActivatedBbk from './activated-bbk'
@@ -94,79 +94,30 @@ export const ManageBbk = (props: PropsT) => {
     return 'Loading...'
   }
 
+  Sentry.configureScope(scope => {
+    scope.setUser({ id: truncateHash(currentAccount) })
+  })
+
   if (approveTokensError) {
     enqueueSnackbar(approveTokensError, { variant: 'error' })
-
-    // We don't need to log when users reject the transaction
-    if (!approveTokensError.includes('signature was denied')) {
-      reportError(
-        new Error(
-          `Couldn't approve AccessToken contract to activate BBK tokens for '${truncateHash(
-            currentAccount
-          )}': ${approveTokensError}`
-        )
-      )
-    }
   }
 
   if (activateTokensError) {
     enqueueSnackbar(activateTokensError, { variant: 'error' })
-
-    // We don't need to log when users reject the transaction
-    if (!activateTokensError.includes('signature was denied')) {
-      reportError(
-        new Error(
-          `Couldn't activate BBK tokens for '${truncateHash(
-            currentAccount
-          )}': ${activateTokensError}`
-        )
-      )
-    }
   }
 
   if (deactivateTokensError) {
     enqueueSnackbar(deactivateTokensError, { variant: 'error' })
-
-    // We don't need to log when users reject the transaction
-    if (!deactivateTokensError.includes('signature was denied')) {
-      reportError(
-        new Error(
-          `Couldn't deactivate BBK tokens for '${truncateHash(
-            currentAccount
-          )}': ${deactivateTokensError}`
-        )
-      )
-    }
   }
 
   if (balances && balances.activated && balances.activated.error) {
     enqueueSnackbar(balances.activated.error, { variant: 'error' })
-    reportError(
-      new Error(
-        `Couldn't fetch activated BBK balance for '${truncateHash(
-          currentAccount
-        )}': ${String(
-          // $FlowIgnore because we're checking for existence of balances.activated.error in the above if-statement
-          balances.activated.error
-        )}`
-      )
-    )
   }
 
   if (balances && balances.deactivated && balances.deactivated.error) {
     enqueueSnackbar(balances.deactivated.error, {
       variant: 'error',
     })
-    reportError(
-      new Error(
-        `Couldn't fetch deactivated BBK balance for '${truncateHash(
-          currentAccount
-        )}': ${String(
-          // $FlowIgnore because we're checking for existence of balances.activated.error in the above if-statement
-          balances.deactivated.error
-        )}`
-      )
-    )
   }
 
   return (

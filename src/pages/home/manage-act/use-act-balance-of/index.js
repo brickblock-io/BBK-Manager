@@ -1,8 +1,12 @@
 // @flow
-import { useEffect, useReducer } from 'react'
+import type { AbstractContractT } from 'truffle-contract'
+import type { ActionsT } from './actions'
+import type { StateT } from './reducer'
+import type { CurrentProviderT } from 'types'
 
 // Hooks
-import { useContract, truncateHash } from '@brickblock/web3-utils'
+import { useEffect, useReducer } from 'react'
+import { useContract } from '@brickblock/web3-utils'
 
 // Data
 import reducer, { initialState } from './reducer'
@@ -10,12 +14,7 @@ import reducer, { initialState } from './reducer'
 // Utils
 import { isBN } from 'web3-utils'
 import formatWeiValue from 'utils/format-wei-value'
-
-// Types
-import type { AbstractContractT } from 'truffle-contract'
-import type { ActionsT } from './actions'
-import type { StateT } from './reducer'
-import type { CurrentProviderT } from 'types'
+import reportError from 'utils/report-error'
 
 type UseActBalanceOfT = ({
   address: ?string,
@@ -53,10 +52,13 @@ export const useActBalanceOf: UseActBalanceOfT = ({
             if (!isBN(rawBalance)) {
               dispatch({
                 type: 'set-balance/error',
-                payload: `AccessToken.balanceOf(${truncateHash(
-                  address
-                )}) didn't return value of type 'BN'. Actual value was: ${rawBalance}`,
+                payload: "Couldn't fetch ACT balance",
               })
+              reportError(
+                new Error(
+                  `AccessToken.balanceOf() didn't return value of type 'BN'. Actual type was: ${typeof rawBalance}`
+                )
+              )
 
               return
             }
@@ -72,6 +74,7 @@ export const useActBalanceOf: UseActBalanceOfT = ({
               type: 'set-balance/error',
               payload: error,
             })
+            reportError(error)
           }
         }
       })()

@@ -6,9 +6,9 @@ import useAct from './use-act'
 import { initialState } from './use-act/reducer'
 
 // Utils
-import reportError from 'utils/report-error'
-import { truncateHash } from '@brickblock/web3-utils'
+import * as Sentry from '@sentry/browser'
 import { useSnackbar } from 'notistack'
+import { truncateHash } from '@brickblock/web3-utils'
 
 // Components
 import Card from '@material-ui/core/Card'
@@ -61,31 +61,16 @@ export const ManageAct = (props: PropsT) => {
     return 'Loading...'
   }
 
+  Sentry.configureScope(scope => {
+    scope.setUser({ id: truncateHash(currentAccount) })
+  })
+
   if (balance && balance.error) {
     enqueueSnackbar(balance.error, { variant: 'error' })
-    reportError(
-      new Error(
-        `Couldn't fetch ACT balance for '${truncateHash(
-          currentAccount
-          // $FlowIgnore because we're checking for existence of balance.error above
-        )}': ${String(balance.error)}`
-      )
-    )
   }
 
   if (sellActForEth.error) {
     enqueueSnackbar(sellActForEth.error, { variant: 'error' })
-
-    // We don't need to log when users reject the transaction
-    if (!String(sellActForEth.error).includes('signature was denied')) {
-      reportError(
-        new Error(
-          `Couldn't sell ACT for '${truncateHash(currentAccount)}': ${String(
-            sellActForEth.error
-          )}`
-        )
-      )
-    }
   }
 
   return (

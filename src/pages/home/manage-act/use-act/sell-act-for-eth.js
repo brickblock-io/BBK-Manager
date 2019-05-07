@@ -1,16 +1,15 @@
 // @flow
 import type { AbstractContractT } from 'truffle-contract'
 import type { ActionsT } from './actions'
+import type { TransactionReceiptT } from 'types'
 
 // Utils
 import { isBN, toBN } from 'web3-utils'
 import formatWeiValue from 'utils/format-wei-value'
+import reportError from 'utils/report-error'
 
 // Config
 import config from 'app.config.js'
-
-// Types
-import type { TransactionReceiptT } from 'types'
 
 type SellActForEthT = ({
   AccessToken: ?AbstractContractT,
@@ -19,6 +18,12 @@ type SellActForEthT = ({
   amount: ?string,
   dispatch: ActionsT => void,
 }) => void
+
+// TODO: replace values with proper error messages
+const errors = {
+  INSUFFICIENT_BALANCE: 'INSUFFICIENT_BALANCE',
+  UNKNOWN_BALANCE: 'UNKNOWN_BALANCE',
+}
 
 export const sellActForEth: SellActForEthT = ({
   AccessToken,
@@ -41,14 +46,14 @@ export const sellActForEth: SellActForEthT = ({
         actBalance = await AccessToken.balanceOf.call(address)
 
         if (!actBalance || !isBN(actBalance)) {
-          throw new Error('UNKNOWN_BALANCE')
+          throw new Error(errors.UNKNOWN_BALANCE)
         }
 
         if (amountInWei.gt(actBalance)) {
-          throw new Error('INSUFFICIENT_ACT')
+          throw new Error(errors.INSUFFICIENT_BALANCE)
         }
       } catch (error) {
-        if (error.message === 'INSUFFICIENT_ACT_BALANCE') {
+        if (error.message === errors.INSUFFICIENT_BALANCE) {
           dispatch({
             type: 'sell-act-for-eth/error',
             payload: `Insufficient ACT balance. The maximum amount you can sell is ${
@@ -56,13 +61,13 @@ export const sellActForEth: SellActForEthT = ({
               formatWeiValue(actBalance).value
             } ACT, because that's all that is available in this account.`,
           })
-        }
-
-        if (error.message === 'UNKNOWN_BALANCE') {
+        } else if (error.message === 'UNKNOWN_BALANCE') {
           dispatch({
             type: 'sell-act-for-eth/error',
             payload: "Couldn't determine current ACT balance",
           })
+        } else {
+          reportError(error)
         }
 
         return
@@ -99,6 +104,7 @@ export const sellActForEth: SellActForEthT = ({
             payload:
               "Couldn't sell ACT for ETH. An unexpected error occurred 😕",
           })
+          reportError(error)
         }
 
         return

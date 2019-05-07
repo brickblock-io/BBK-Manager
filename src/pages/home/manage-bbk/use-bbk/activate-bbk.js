@@ -1,16 +1,21 @@
 // @flow
 import type { AbstractContractT } from 'truffle-contract'
 import type { ActionsT } from './actions'
+import type { TransactionReceiptT } from 'types'
 
 // Utils
 import { isBN, toBN } from 'web3-utils'
 import formatWeiValue from 'utils/format-wei-value'
+import reportError from 'utils/report-error'
 
 // Config
 import config from 'app.config.js'
 
-// Types
-import type { TransactionReceiptT } from 'types'
+// TODO: replace values with proper error messages
+const errors = {
+  INSUFFICIENT_BALANCE: 'INSUFFICIENT_BALANCE',
+  UNKNOWN_BALANCE: 'UNKNOWN_BALANCE',
+}
 
 type ActivateBbkT = ({
   AccessToken: ?AbstractContractT,
@@ -31,23 +36,23 @@ export const activateBbk: ActivateBbkT = ({
     if (AccessToken && BrickblockToken && amount) {
       const amountInWei = toBN(amount).mul(toBN(1e18))
 
+      let deactivatedBbkBalance
+
       /*
        * Get current deactivated BBK balance and check that it's sufficient
        */
-      let deactivatedBbkBalance
-
       try {
         deactivatedBbkBalance = await BrickblockToken.balanceOf.call(address)
 
         if (!deactivatedBbkBalance || !isBN(deactivatedBbkBalance)) {
-          throw new Error('UNKNOWN_BALANCE')
+          throw new Error(errors.UNKNOWN_BALANCE)
         }
 
         if (amountInWei.gt(deactivatedBbkBalance)) {
-          throw new Error('INSUFFICIENT_BBK_BALANCE')
+          throw new Error(errors.INSUFFICIENT_BALANCE)
         }
       } catch (error) {
-        if (error.message === 'INSUFFICIENT_BBK_BALANCE') {
+        if (error.message === errors.INSUFFICIENT_BALANCE) {
           dispatch({
             type: 'activate-tokens/error',
             payload: `Insufficient BBK balance. The maximum amount you activate activate is ${
@@ -55,13 +60,13 @@ export const activateBbk: ActivateBbkT = ({
               formatWeiValue(deactivatedBbkBalance).value
             } BBK, because that's all that is available in this account.`,
           })
-        }
-
-        if (error.message === 'UNKNOWN_BALANCE') {
+        } else if (error.message === 'UNKNOWN_BALANCE') {
           dispatch({
             type: 'activate-tokens/error',
             payload: "Couldn't determine current deactivated BBK balance",
           })
+        } else {
+          reportError(error)
         }
 
         return
@@ -89,15 +94,17 @@ export const activateBbk: ActivateBbkT = ({
           )
         ) {
           dispatch({
-            type: 'activate-tokens/error',
+            type: 'approve-tokens/error',
             payload: 'Transaction signature was denied in MetaMask',
           })
         } else {
           dispatch({
-            type: 'activate-tokens/error',
+            type: 'approve-tokens/error',
             payload:
               "Couldn't approve AccessToken contract to activate BBK on your behalf. An unexpected error occurred 😕",
           })
+
+          reportError(error)
         }
 
         return
@@ -134,6 +141,7 @@ export const activateBbk: ActivateBbkT = ({
             payload:
               "Couldn't activate BBK tokens. An unexpected error occurred 😕",
           })
+          reportError(error)
         }
 
         return

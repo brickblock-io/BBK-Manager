@@ -6,9 +6,15 @@ import type { TransactionReceiptT } from 'types'
 // Utils
 import { isBN, toBN } from 'web3-utils'
 import formatWeiValue from 'utils/format-wei-value'
+import reportError from 'utils/report-error'
 
 // Config
 import config from 'app.config.js'
+// TODO: replace values with proper error messages
+const errors = {
+  INSUFFICIENT_BALANCE: 'INSUFFICIENT_BALANCE',
+  UNKNOWN_BALANCE: 'UNKNOWN_BALANCE',
+}
 
 type DeactivateBbkT = ({
   AccessToken: ?AbstractContractT,
@@ -27,23 +33,23 @@ export const deactivateBbk: DeactivateBbkT = ({
     if (AccessToken && amount) {
       const amountInWei = toBN(amount).mul(toBN(1e18))
 
+      let activatedBbkBalance
+
       /*
        * Get currently activated BBK balance and check that it's sufficient
        */
-      let activatedBbkBalance
-
       try {
         activatedBbkBalance = await AccessToken.lockedBbkOf.call(address)
 
         if (!activatedBbkBalance || !isBN(activatedBbkBalance)) {
-          throw new Error('UNKNOWN_BALANCE')
+          throw new Error(errors.UNKNOWN_BALANCE)
         }
 
         if (amountInWei.gt(activatedBbkBalance)) {
-          throw new Error('INSUFFICIENT_BBK_BALANCE')
+          throw new Error(errors.INSUFFICIENT_BALANCE)
         }
       } catch (error) {
-        if (error.message === 'INSUFFICIENT_BBK_BALANCE') {
+        if (error.message === errors.INSUFFICIENT_BALANCE) {
           dispatch({
             type: 'deactivate-tokens/error',
             payload: `Insufficient activated BBK balance. The maximum amount you can deactivate is ${
@@ -51,13 +57,13 @@ export const deactivateBbk: DeactivateBbkT = ({
               formatWeiValue(activatedBbkBalance).value
             } BBK, because that's all you have activated with this account.`,
           })
-        }
-
-        if (error.message === 'UNKNOWN_BALANCE') {
+        } else if (error.message === 'UNKNOWN_BALANCE') {
           dispatch({
             type: 'deactivate-tokens/error',
             payload: "Couldn't determine current activated BBK balance",
           })
+        } else {
+          reportError(error)
         }
 
         return
@@ -93,6 +99,7 @@ export const deactivateBbk: DeactivateBbkT = ({
             payload:
               "Couldn't deactivate BBK tokens. An unexpected error occurred 😕",
           })
+          reportError(error)
         }
 
         return

@@ -1,13 +1,13 @@
 // @flow
-import { isBN } from 'web3-utils'
-import formatWeiValue from 'utils/format-wei-value'
-import { truncateHash } from '@brickblock/web3-utils'
-
-// Types
 import type { AbstractContractT } from 'truffle-contract'
 import type { ActionsT } from './actions'
 import type { StateT } from './reducer'
 import type BN from 'bn.js'
+
+// Utils
+import { isBN } from 'web3-utils'
+import formatWeiValue from 'utils/format-wei-value'
+import reportError from 'utils/report-error'
 
 type GetDeactivatedBbkBalanceT = ({
   BrickblockToken: ?AbstractContractT,
@@ -32,12 +32,13 @@ export const getDeactivatedBbkBalance: GetDeactivatedBbkBalanceT = ({
         if (!isBN(rawBalance)) {
           dispatch({
             type: 'set-deactivated-balance/error',
-            payload: `BrickblockToken.balanceOf(${truncateHash(
-              address
-            )}) didn't return value of type 'BN'.\nActual value was: ${String(
-              rawBalance
-            )}.\nActual type was ${typeof rawBalance}`,
+            payload: "Couldn't fetch deactivated BBK balance",
           })
+          reportError(
+            new Error(
+              `BrickblockToken.balanceOf() didn't return value of type 'BN'. Actual type was ${typeof rawBalance}`
+            )
+          )
 
           return
         }
@@ -64,6 +65,7 @@ export const getDeactivatedBbkBalance: GetDeactivatedBbkBalanceT = ({
           type: 'set-deactivated-balance/error',
           payload: error,
         })
+        reportError(error)
       }
     }
   })()
