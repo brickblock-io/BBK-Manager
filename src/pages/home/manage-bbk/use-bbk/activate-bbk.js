@@ -94,12 +94,12 @@ export const activateBbk: ActivateBbkT = ({
           )
         ) {
           dispatch({
-            type: 'approve-tokens/error',
+            type: 'activate-tokens/error',
             payload: 'Transaction signature was denied in MetaMask',
           })
         } else {
           dispatch({
-            type: 'approve-tokens/error',
+            type: 'activate-tokens/error',
             payload:
               "Couldn't approve AccessToken contract to activate BBK on your behalf. An unexpected error occurred 😕",
           })
