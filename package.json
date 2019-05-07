@@ -73,7 +73,7 @@
     "abi-decoder": "^1.2.0",
     "autosuggest-highlight": "^3.1.1",
     "axios": "^0.18.0",
-    "notistack": "^0.8.2",
+    "notistack": "0.7",
     "number-to-words": "^1.2.4",
     "ramda": "^0.26.1",
     "react": "^16.8.6",
