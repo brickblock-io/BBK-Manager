@@ -7,7 +7,8 @@ import reportError from './report-error'
 jest.mock('./get-env-var')
 jest.mock('@sentry/browser')
 
-const setMockedEnv = env => getEnvVar.mockImplementation(() => env)
+const setMockedEnvironment = environment =>
+  getEnvVar.mockImplementation(() => environment)
 
 const consoleSpy = jest.spyOn(console, 'error')
 const sentrySpy = jest.spyOn(Sentry, 'captureException')
@@ -25,12 +26,12 @@ describe('reportError', () => {
 
   describe('in staging and production environment', () => {
     it('should send the error to sentry', () => {
-      setMockedEnv('staging')
+      setMockedEnvironment('staging')
       reportError(new Error('use-raven-in-staging'))
       expect(sentrySpy).toHaveBeenCalled()
       sentrySpy.mockReset()
 
-      setMockedEnv('production')
+      setMockedEnvironment('production')
       reportError(new Error('use-raven-in-prod'))
       expect(sentrySpy).toHaveBeenCalled()
     })
@@ -38,7 +39,7 @@ describe('reportError', () => {
 
   describe('in development, test, review and all other environments', () => {
     it('should log the error with console.error', () => {
-      setMockedEnv('development')
+      setMockedEnvironment('development')
 
       const error = new Error('use-console')
       const message = 'Sexy error'
@@ -50,13 +51,13 @@ describe('reportError', () => {
     it('should NOT send the error to sentry', () => {
       const errorMessage = 'Sexy error'
 
-      setMockedEnv('development')
+      setMockedEnvironment('development')
       reportError(new Error('use-console'), errorMessage)
       expect(sentrySpy).not.toHaveBeenCalled()
 
       sentrySpy.mockReset()
 
-      setMockedEnv('review')
+      setMockedEnvironment('review')
       reportError(new Error('use-console'), errorMessage)
       expect(sentrySpy).not.toHaveBeenCalled()
     })
