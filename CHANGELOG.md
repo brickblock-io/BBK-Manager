@@ -1,6 +1,30 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.2.0](https://git.brickblock.sh///compare/v1.1.1...v1.2.0) (2019-05-07)
+
+
+### Bug Fixes
+
+* typo in button text ([974b535](https://git.brickblock.sh///commit/974b535))
+
+
+### Chore
+
+* **build:** added .versionrc file to allow customizing CHANGELOG.md ([b602f73](https://git.brickblock.sh///commit/b602f73))
+* update dependencies ([3328660](https://git.brickblock.sh///commit/3328660))
+* updated devDependencies ([c262941](https://git.brickblock.sh///commit/c262941))
+* **cleanup:** removed unused ‘use-bbk-balances’ folder ([81f1a59](https://git.brickblock.sh///commit/81f1a59))
+
+
+### Features
+
+* display “Retry” as button text if approve or activate transaction failed ([23d4852](https://git.brickblock.sh///commit/23d4852))
+* **BBK:** added loading message informing users that transactions can take a long time and that they shouldn’t close their browser ([0dd6118](https://git.brickblock.sh///commit/0dd6118))
+* **error-handling:** improve error reporting by co-locating the sentry calls with the actual code causing the errors ([78bd6e6](https://git.brickblock.sh///commit/78bd6e6))
+
+
 
 ## [1.1.1](https://git.brickblock.sh/platform/bbk-manager/compare/v1.1.0...v1.1.1) (2019-04-25)
 
