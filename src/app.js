@@ -6,10 +6,11 @@ import { SnackbarProvider } from 'notistack'
 import { useWeb3 } from '@brickblock/web3-utils'
 
 // Components
-import { Button, theme } from '@brickblock/styleguide'
+import { theme } from '@brickblock/styleguide'
 import ErrorBoundary from './layout/components/error-boundary'
 import Layout from './layout'
 import Home from './pages/home'
+import DismissSnackbarButton from './components/dismiss-snackbar-button'
 
 // Theme & Styles & Assets
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -47,11 +48,7 @@ const App = () => {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <SnackbarProvider
-        action={
-          <Button size="small" style={{ color: 'white' }} variant="text">
-            {'Dismiss'}
-          </Button>
-        }
+        action={key => <DismissSnackbarButton id={key} />}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
         autoHideDuration={7000}
         maxSnack={3}
