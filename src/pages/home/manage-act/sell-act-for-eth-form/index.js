@@ -16,6 +16,7 @@ import { Button } from '@brickblock/styleguide'
 import ConfirmationDialog from 'components/confirmation-dialog'
 import InfoOutlined from '@material-ui/icons/InfoOutlined'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import NumberField from 'pages/home/number-field'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 
@@ -105,6 +106,7 @@ export const SellActForEthForm = (props: PropsT) => {
               </Tooltip>
             </InputAdornment>
           ),
+          inputComponent: NumberField,
         }}
         className={classes.input}
         disabled={loading || !hasBalance}
@@ -114,7 +116,6 @@ export const SellActForEthForm = (props: PropsT) => {
         name="sell-act-for-eth"
         onChange={handleChange}
         placeholder="e.g. 1000"
-        type="number"
         value={amount}
       />
       <Button
