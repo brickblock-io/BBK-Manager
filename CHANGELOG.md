@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://git.brickblock.sh///compare/v1.2.1...v1.2.2) (2019-05-13)
+
+
+### Bug Fixes
+
+* disallow decimal numbers in all input fields (BBK-MANAGER-4A in sentry) ([a4ebad7](https://git.brickblock.sh///commit/a4ebad7))
+* upgraded ‘notistack’ (and other deps) to latest version and fixed malfunctioning ‘Dismiss’-snackbar button ([95ade21](https://git.brickblock.sh///commit/95ade21))
+
+
+
 ### [1.2.1](https://git.brickblock.sh///compare/v1.2.0...v1.2.1) (2019-05-07)
 
 
