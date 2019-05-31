@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://git.brickblock.sh///compare/v1.3.0...v1.4.0) (2019-05-31)
+
+
+### Features
+
+* **act:** add info text for the ACT-to-ETH exchange rate ([497eef1](https://git.brickblock.sh///commit/497eef1))
+
+
+
 ## [1.3.0](https://git.brickblock.sh///compare/v1.2.2...v1.3.0) (2019-05-31)
 
 
