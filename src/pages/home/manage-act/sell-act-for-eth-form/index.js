@@ -8,7 +8,6 @@ import { ACTContext } from 'pages/home/manage-act'
 import useInput from 'hooks/use-input'
 
 // Utils
-import { toWords } from 'number-to-words'
 import validate from './validate'
 
 // Components
@@ -75,9 +74,6 @@ export const SellActForEthForm = (props: PropsT) => {
     validate: _validate,
   })
 
-  const amountInWords: ?string =
-    amount && amount.length ? toWords(parseInt(amount)) : ''
-
   return (
     <form
       className={classes.wrapper}
@@ -111,7 +107,7 @@ export const SellActForEthForm = (props: PropsT) => {
         className={classes.input}
         disabled={loading || !hasBalance}
         error={!!error}
-        helperText={error || amountInWords}
+        helperText={error}
         label="Sell ACT for ETH"
         name="sell-act-for-eth"
         onChange={handleChange}

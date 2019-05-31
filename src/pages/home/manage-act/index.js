@@ -89,7 +89,7 @@ export const ManageAct = (props: PropsT) => {
                   className={classes.balanceInWords}
                   variant="caption"
                 >
-                  ({balance.valueInWords})
+                  &nbsp;
                 </Typography>
               </div>
               <SellActForEthForm />
