@@ -5,7 +5,7 @@ import { toWords } from 'number-to-words'
 // types
 import type BN from 'bn.js'
 
-function formatWeiValue(
+function formatWeiToEth(
   value: BN
 ): {| value: string, valueAsNumber: number, valueInWords: string |} {
   const valueInEth = value.div(toBN(1e18))
@@ -16,4 +16,15 @@ function formatWeiValue(
   return { value: valueAsLocalizedString, valueAsNumber, valueInWords }
 }
 
-export default formatWeiValue
+export function formatWeiToEthWithDecimals(
+  value: BN
+): {| value: string, valueAsNumber: number, valueInWords: string |} {
+  const valueAsString = value.toString()
+  const valueAsNumber = parseInt(valueAsString) / 1e18
+  const valueInWords = toWords(valueAsNumber)
+  const valueAsLocalizedString = valueAsNumber.toLocaleString()
+
+  return { value: valueAsLocalizedString, valueAsNumber, valueInWords }
+}
+
+export default formatWeiToEth

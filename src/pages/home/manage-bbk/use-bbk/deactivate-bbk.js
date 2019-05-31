@@ -5,7 +5,7 @@ import type { TransactionReceiptT } from 'types'
 
 // Utils
 import { isBN, toBN } from 'web3-utils'
-import formatWeiValue from 'utils/format-wei-value'
+import formatWeiToEth from 'utils/format-wei-to-eth'
 import reportError from 'utils/report-error'
 
 // Config
@@ -54,7 +54,7 @@ export const deactivateBbk: DeactivateBbkT = ({
             type: 'deactivate-tokens/error',
             payload: `Insufficient activated BBK balance. The maximum amount you can deactivate is ${
               // $FlowIgnore because we're checking that deactivatedBbkBalance is not undefined above
-              formatWeiValue(activatedBbkBalance).value
+              formatWeiToEth(activatedBbkBalance).value
             } BBK, because that's all you have activated with this account.`,
           })
         } else if (error.message === 'UNKNOWN_BALANCE') {

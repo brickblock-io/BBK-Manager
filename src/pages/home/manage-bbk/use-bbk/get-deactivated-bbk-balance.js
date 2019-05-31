@@ -6,7 +6,7 @@ import type BN from 'bn.js'
 
 // Utils
 import { isBN } from 'web3-utils'
-import formatWeiValue from 'utils/format-wei-value'
+import formatWeiToEth from 'utils/format-wei-to-eth'
 import reportError from 'utils/report-error'
 
 type GetDeactivatedBbkBalanceT = ({
@@ -43,7 +43,7 @@ export const getDeactivatedBbkBalance: GetDeactivatedBbkBalanceT = ({
           return
         }
 
-        const newBalance = formatWeiValue(rawBalance)
+        const newBalance = formatWeiToEth(rawBalance)
 
         // First execution of this effect, just set the initial balance directly
         if (!state.deactivated) {
