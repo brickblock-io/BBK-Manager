@@ -15,7 +15,7 @@ import { Button } from '@brickblock/styleguide'
 import ConfirmationDialog from 'components/confirmation-dialog'
 import InfoOutlined from '@material-ui/icons/InfoOutlined'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import NumberField from 'pages/home/number-field'
+import NumberFieldWithDecimals from 'pages/home/number-field-with-decimals'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 
@@ -102,7 +102,7 @@ export const SellActForEthForm = (props: PropsT) => {
               </Tooltip>
             </InputAdornment>
           ),
-          inputComponent: NumberField,
+          inputComponent: NumberFieldWithDecimals,
         }}
         autoComplete="off"
         className={classes.input}

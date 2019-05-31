@@ -16,13 +16,15 @@ export function validate(value: string): boolean {
 
   if (!value || value === '0') {
     ctx.setError(
-      `Please enter a valid amount between 1 and ${ctx.maxValue.value}`
+      `Please enter a valid amount. You can sell up to ${
+        ctx.maxValue.value
+      } ACT.`
     )
 
     return false
   }
 
-  if (parseInt(value) > ctx.maxValue.valueAsNumber) {
+  if (parseFloat(value) > ctx.maxValue.valueAsNumber) {
     ctx.setError(
       `You can't sell more than the ${
         ctx.maxValue.value

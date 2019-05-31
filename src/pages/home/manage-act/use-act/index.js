@@ -9,7 +9,7 @@ import reducer, { initialState } from './reducer'
 
 // Utils
 import { isBN } from 'web3-utils'
-import formatWeiValue from 'utils/format-wei-value'
+import formatWeiToEthWithDecimals from 'utils/format-wei-to-eth-with-decimals'
 import sellActForEth from './sell-act-for-eth'
 
 // Types
@@ -80,7 +80,7 @@ export const useAct: UseActBalanceOfT = ({
               return
             }
 
-            const newBalance = formatWeiValue(rawBalance)
+            const newBalance = formatWeiToEthWithDecimals(rawBalance)
 
             // First execution of this effect, just set the initial balance directly
             if (!state.balance) {

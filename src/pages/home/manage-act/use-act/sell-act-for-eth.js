@@ -5,7 +5,7 @@ import type { TransactionReceiptT } from 'types'
 
 // Utils
 import { isBN, toBN } from 'web3-utils'
-import formatWeiValue from 'utils/format-wei-value'
+import formatWeiToEthWithDecimals from 'utils/format-wei-to-eth-with-decimals'
 import reportError from 'utils/report-error'
 
 // Config
@@ -35,7 +35,7 @@ export const sellActForEth: SellActForEthT = ({
   // eslint-disable-next-line no-extra-semi
   ;(async () => {
     if (AccessToken && FeeManager && amount) {
-      const amountInWei = toBN(amount).mul(toBN(1e18))
+      const amountInWei = toBN(amount * 1e18)
 
       /*
        * Get current ACT balance and check that it's sufficient
@@ -58,7 +58,7 @@ export const sellActForEth: SellActForEthT = ({
             type: 'sell-act-for-eth/error',
             payload: `Insufficient ACT balance. The maximum amount you can sell is ${
               // $FlowIgnore because we're checking that actBalance is not undefined above
-              formatWeiValue(actBalance).value
+              formatWeiToEthWithDecimals(actBalance).value
             } ACT, because that's all that is available in this account.`,
           })
         } else if (error.message === 'UNKNOWN_BALANCE') {
