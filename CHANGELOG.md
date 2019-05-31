@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://git.brickblock.sh///compare/v1.2.2...v1.3.0) (2019-05-31)
+
+
+### Features
+
+* remove amount in words from ACT input field because the “number-to-words” package doesn’t support decimals ([4ae0dfc](https://git.brickblock.sh///commit/4ae0dfc))
+* **act:** allow decimals in sell-act input field ([23194aa](https://git.brickblock.sh///commit/23194aa))
+* **act:** allow only up to 6 decimals for ACT input field ([25acb78](https://git.brickblock.sh///commit/25acb78))
+* **act:** turn off autocomplete for the sell-act input field ([7215e86](https://git.brickblock.sh///commit/7215e86))
+* **act:** use “toString()” instead of “toLocaleString()” to display all decimals of ACT balance ([c1a57e3](https://git.brickblock.sh///commit/c1a57e3))
+
+
+
 ### [1.2.2](https://git.brickblock.sh///compare/v1.2.1...v1.2.2) (2019-05-13)
 
 
