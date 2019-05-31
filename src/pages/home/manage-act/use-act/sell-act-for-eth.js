@@ -35,7 +35,7 @@ export const sellActForEth: SellActForEthT = ({
   // eslint-disable-next-line no-extra-semi
   ;(async () => {
     if (AccessToken && FeeManager && amount) {
-      const amountInWei = toBN(amount * 1e18)
+      const amountInWei = toBN(parseFloat(amount) * 1e18)
 
       /*
        * Get current ACT balance and check that it's sufficient

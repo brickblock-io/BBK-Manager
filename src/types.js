@@ -11,7 +11,7 @@ export type BalanceT = {|
   error: ?string,
   value: string,
   valueAsNumber: number,
-  valueInWords: string,
+  valueInWords?: string,
 |}
 
 export type ERC20TransferTransactionT = {|

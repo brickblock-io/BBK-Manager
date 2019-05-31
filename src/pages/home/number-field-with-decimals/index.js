@@ -18,7 +18,7 @@ export const NumberFieldWithDecimals = (props: PropsT) => {
     <NumberFormat
       {...other}
       allowNegative={false}
-      decimalScale={9}
+      decimalScale={6}
       getInputRef={inputRef}
       onValueChange={({ value }: { value: string }) => {
         onChange({ target: { value } })

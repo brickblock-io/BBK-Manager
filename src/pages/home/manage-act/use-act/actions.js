@@ -5,7 +5,6 @@ type SetBalanceT = {|
   payload: {|
     value: string,
     valueAsNumber: number,
-    valueInWords: string,
   |},
   type: 'set-balance',
 |}
