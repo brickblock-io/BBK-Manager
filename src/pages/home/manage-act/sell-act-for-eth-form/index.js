@@ -94,7 +94,7 @@ export const SellActForEthForm = (props: PropsT) => {
                   hasBalance
                     ? `How many of your ${String(
                         balance && balance.value
-                      )} ACT do you want to sell for ETH?`
+                      )} ACT do you want to sell for ETH? Currently the exchange rate is 1,000 ACT for 1 ETH.`
                     : "You don't have any ACT in your current account"
                 }
               >
