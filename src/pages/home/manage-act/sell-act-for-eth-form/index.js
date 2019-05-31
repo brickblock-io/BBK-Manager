@@ -104,6 +104,7 @@ export const SellActForEthForm = (props: PropsT) => {
           ),
           inputComponent: NumberField,
         }}
+        autoComplete="off"
         className={classes.input}
         disabled={loading || !hasBalance}
         error={!!error}
