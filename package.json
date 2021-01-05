@@ -72,7 +72,7 @@
     "@sentry/browser": "^5.2.1",
     "abi-decoder": "^1.2.0",
     "autosuggest-highlight": "^3.1.1",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "notistack": "0.8.2",
     "number-to-words": "^1.2.4",
     "ramda": "^0.26.1",
